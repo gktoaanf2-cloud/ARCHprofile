@@ -2,7 +2,8 @@
 <html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ARCH PROFILE CARD - MONOCHROME TACTICAL</title>
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- 폰트 업데이트: Playfair Display 제거, Noto Serif KR (본명조) 추가 -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Serif+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 /* 모노크롬 베이스 세팅 */
@@ -103,9 +104,12 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
 /* ═══ CARD BASE ═══ */
 .card-h{width:960px;height:540px;position:relative;overflow:hidden;background:var(--acc-bg);box-shadow:0 20px 50px rgba(0,0,0,0.8);}
 .card-v{width:405px;height:720px;position:relative;overflow:hidden;background:var(--acc-bg);box-shadow:0 20px 50px rgba(0,0,0,0.8);}
-.card-img-wrap{position:absolute;top:0;left:0;overflow:hidden;cursor:grab;z-index:1;}
+
+/* 이미지 렌더링 찌꺼기(Artifact) 방지용 하드웨어 가속 및 외곽선 보정 적용 */
+.card-img-wrap{position:absolute;top:0;left:0;overflow:hidden;cursor:grab;z-index:1; transform:translateZ(0); -webkit-transform:translateZ(0);}
 .card-img-wrap:active{cursor:grabbing;}
-.card-img{position:absolute;width:200%;height:200%;top:-50%;left:-50%;background-size:contain;background-position:center;background-repeat:no-repeat;transform-origin:center;}
+.card-img{position:absolute;width:200%;height:200%;top:-50%;left:-50%;background-size:contain;background-position:center;background-repeat:no-repeat;transform-origin:center; backface-visibility:hidden; -webkit-backface-visibility:hidden; outline:1px solid transparent;}
+
 .card-diag{position:absolute;z-index:3;pointer-events:none;overflow:hidden;}
 .card-topbar{position:absolute;top:0;left:0;right:0;height:2px;z-index:6;background:linear-gradient(to right,var(--acc),transparent 60%);opacity:0.3;}
 
@@ -162,23 +166,26 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
 .card-v .card-elem-kw::after{content:'';width:1px;height:20px;background:linear-gradient(to bottom,var(--acc) 0%,var(--acc) 8px,transparent 8px,transparent 12px,var(--acc) 12px,var(--acc) 20px);opacity:0.4;flex-shrink:0;}
 .card-v .card-elem-kw::before{content:'';width:10px;height:2px;background:var(--acc);opacity:0.5;}
 
-.card-modifier{font-family:'Playfair Display',serif;font-size:12px;font-style:italic;letter-spacing:2.5px;color:var(--acc);opacity:0.8;text-transform:uppercase;margin-bottom:6px;}
+/* 폰트 수정: Noto Serif KR 로 통일하여 한글/영문 모두 날카롭게 출력 */
+.card-modifier{font-family:'Noto Serif KR',serif;font-size:12px;font-weight:500;letter-spacing:2.5px;color:var(--acc);opacity:0.8;text-transform:uppercase;margin-bottom:6px;}
 .card-type{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--acc);opacity:0.6;margin-bottom:10px;}
 .card-stat-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2.5px;color:var(--acc);text-transform:uppercase;font-weight:600;opacity:0.6;display:flex;align-items:center;gap:6px;}
 .card-stat-label::before{content:'';width:4px;height:4px;background:var(--acc);opacity:0.5;transform:rotate(45deg);flex-shrink:0;}
 .card-stat-value{font-family:'Pretendard',sans-serif;font-size:12px;color:var(--acc-tx);opacity:0.8;font-weight:400;letter-spacing:-0.02em;}
 
 .card-abilities{margin-top:16px;display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(255,255,255,0.1);padding-top:12px;}
-.card-ability-title{font-family:'IBM Plex Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--acc);opacity:0.5;margin-bottom:2px;text-transform:uppercase;}
-.card-abil-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);padding:6px 10px;border-left:2px solid var(--acc);}
-.card-abil-no{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--acc);opacity:0.8;letter-spacing:1px;}
-.card-abil-name{font-family:'Pretendard',sans-serif;font-size:12px;color:var(--acc-tx);font-weight:500;letter-spacing:-0.02em;}
+.card-ability-title{font-family:'Pretendard',sans-serif;font-size:9px;font-weight:600;letter-spacing:1px;color:var(--acc);opacity:0.6;margin-bottom:2px;}
+.card-abil-item{display:flex;align-items:baseline;gap:8px;background:rgba(255,255,255,0.03);padding:6px 10px;border-left:2px solid var(--acc);}
+.card-abil-no{font-family:'Pretendard',sans-serif;font-size:10px;font-weight:600;color:var(--acc);opacity:0.8;letter-spacing:0;}
+.card-abil-name{font-family:'Pretendard',sans-serif;font-size:12px;color:var(--acc-tx);font-weight:400;letter-spacing:-0.02em;opacity:0.8;}
 
-.card-modifier2{font-family:'Playfair Display',serif;font-size:10px;font-style:italic;color:var(--acc-tx);opacity:0.3;margin-top:16px;text-transform:uppercase;white-space:pre-line;letter-spacing:1px;}
+/* 폰트 수정: Noto Serif KR */
+.card-modifier2{font-family:'Noto Serif KR',serif;font-size:10px;font-weight:400;color:var(--acc-tx);opacity:0.4;margin-top:16px;text-transform:uppercase;white-space:pre-line;letter-spacing:1.5px;}
 
 @media(max-width:900px){.app{flex-direction:column;}.editor{width:100%;min-width:auto;max-height:none;}}
 </style></head><body>
 
+<!-- LOADING -->
 <div class="loading-screen" id="loadScreen">
     <div class="ld-logo">ARCH</div>
     <div class="ld-text" id="ldText">AEGIS SYSTEM INITIALIZING...</div>
@@ -193,6 +200,7 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
         <button class="mode-btn" data-mode="v" onclick="setMode('v')">VERTICAL</button>
     </div>
 
+    <!-- 기본 색상을 흑백 기반으로 세팅 -->
     <div class="ed-sec">THEME CONFIG</div>
     <div class="ed-colors">
         <div class="ed-color-item"><span>ACCENT</span><input type="color" id="c_acc" value="#ffffff"></div>
@@ -266,6 +274,7 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
             <div class="card-cn-kr" id="cCnKr">코드네임</div>
             
             <div class="card-stats" id="cStats"></div>
+            <!-- 카드 렌더링에 별도로 추가되는 어빌리티 모듈 칸 -->
             <div id="cAbilities"></div>
             
             <div class="card-modifier2" id="cSub">SUBTITLE</div>
@@ -315,7 +324,7 @@ function applyColors(){
     if(eData) renderElemIcon(eData.b64, a);
 }
 
-// Abilities (에디터 로직)
+// Abilities
 function addAbility(){abilities.push('');renderAbilities();updateCard();}
 function removeAbility(i){abilities.splice(i,1);renderAbilities();updateCard();}
 function renderAbilities(){
@@ -348,7 +357,6 @@ function updateCard(){
     const elem=v('f_elem')||'무속성';
     const eData=ELEMENTS[elem];
     
-    // 기본 스테이터스 렌더링
     let statsHtml='';
     const fields=[['NAME',v('f_name')],['AGE',v('f_age')],['NATION',v('f_nation')],['RANK',v('f_rank')],['ELEMENT',eData?eData.en:'—'],['TEAM',team]];
     fields.forEach(([l,val])=>{
@@ -356,7 +364,6 @@ function updateCard(){
     });
     document.getElementById('cStats').innerHTML=statsHtml;
 
-    // 카드용 어빌리티 모듈 별도 렌더링
     let abilHtml='';
     const validAbilities = abilities.filter(a => a.trim() !== '');
     if(validAbilities.length > 0) {
@@ -381,7 +388,6 @@ function renderElemIcon(b64, color){
     let svgStr=atob(b64).replace(/<path/g,'<path fill="'+color+'"');
     const tmp=new Image();
     tmp.onload=()=>{
-        // 캔버스 해상도
         const cv=document.createElement('canvas');cv.width=240;cv.height=240;
         cv.getContext('2d').drawImage(tmp,0,0,240,240);
         document.getElementById('cElemIcon').innerHTML='<img src="'+cv.toDataURL('image/png')+'" style="width:100%;height:100%;display:block;" alt="">';
@@ -414,16 +420,20 @@ async function exportCard(){
     await new Promise(r=>setTimeout(r,500));
     const card=document.getElementById('card');
     const bgColor=getComputedStyle(document.documentElement).getPropertyValue('--acc-bg').trim()||'#080808';
+    
     const c=await html2canvas(card,{
         backgroundColor:bgColor,
-        scale:2,useCORS:true,allowTaint:true,
-        width:card.offsetWidth,height:card.offsetHeight,
+        scale:3,
+        useCORS:true,
+        allowTaint:true,
+        width:card.offsetWidth,
+        height:card.offsetHeight,
         logging:false,
         onclone:function(doc){
-            const diag=doc.querySelector('.card-diag');
-            if(diag)diag.style.display='none';
-            const scan=doc.querySelector('.deco-scanline');
-            if(scan)scan.style.display='none';
+            const clonedCard = doc.getElementById('card');
+            clonedCard.style.boxShadow = 'none';
+            const diag = clonedCard.querySelector('.card-diag');
+            if(diag) diag.style.display='none';
         }
     });
     const a=document.createElement('a');a.download='ARCH_PROFILE.png';a.href=c.toDataURL('image/png');a.click();
