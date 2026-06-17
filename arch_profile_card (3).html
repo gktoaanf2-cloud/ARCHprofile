@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCH PROFILE CARD</title>
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root{--bg:#0A0A0F;--bg2:#111118;--panel:#161620;--bdr:rgba(255,255,255,0.06);--bdr-h:rgba(255,255,255,0.12);--tx:#F0EDE8;--tx-m:#8884A0;--tx-l:#55526A;--elem:#AAAACC;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{background:var(--bg);color:var(--tx);font-family:'Pretendard',sans-serif;min-height:100vh;font-weight:300;letter-spacing:-0.04em;}
+        body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;}
+        .app{display:flex;min-height:100vh;}
+        .editor-panel{width:340px;min-width:340px;background:var(--panel);border-right:1px solid var(--bdr);padding:20px;overflow-y:auto;max-height:100vh;}
+        .preview-panel{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto;background:var(--bg2);}
+        .ed-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:3px;margin-bottom:2px;}
+        .ed-sub{font-size:.6rem;color:var(--tx-l);letter-spacing:2px;margin-bottom:16px;}
+        .ed-sec{font-family:'IBM Plex Mono',monospace;font-size:.55rem;color:var(--tx-m);letter-spacing:3px;margin:16px 0 6px;display:flex;align-items:center;gap:6px;}
+        .ed-sec::after{content:'';flex:1;height:1px;background:var(--bdr);}
+        .ed-row{margin-bottom:8px;}
+        .ed-label{font-size:.63rem;color:var(--tx-m);margin-bottom:2px;display:flex;justify-content:space-between;}
+        .ed-label span{font-size:.55rem;color:var(--tx-l);}
+        .ed-input{width:100%;padding:6px 8px;background:var(--bg);border:1px solid var(--bdr);color:var(--tx);font-family:inherit;font-size:.78rem;outline:none;font-weight:300;letter-spacing:-0.03em;}
+        .ed-input:focus{border-color:var(--elem);}
+        .ed-input::placeholder{color:var(--tx-l);}
+        .ed-select{width:100%;padding:6px 8px;background:var(--bg);border:1px solid var(--bdr);color:var(--tx);font-size:.78rem;outline:none;cursor:pointer;}
+        .ed-file-row{display:flex;gap:6px;}
+        .ed-file{flex:1;padding:8px;background:var(--bg);border:1px solid var(--bdr-h);color:var(--tx-m);font-size:.7rem;cursor:pointer;text-align:center;transition:0.15s;}
+        .ed-file:hover{border-color:var(--elem);}
+        .ed-file input{display:none;}
+        .ed-file-del{padding:8px 12px;background:var(--bg);border:1px solid rgba(255,80,80,0.3);color:#ff5555;font-size:.7rem;cursor:pointer;}
+        .ed-toggle{display:flex;border:1px solid var(--bdr);}
+        .ed-tog-btn{flex:1;padding:6px;text-align:center;font-size:.7rem;cursor:pointer;background:transparent;border:none;color:var(--tx-m);transition:0.15s;font-family:inherit;}
+        .ed-tog-btn.active{background:var(--elem);color:#000;font-weight:600;}
+        .mode-sw{display:flex;margin-bottom:12px;border:1px solid var(--bdr);}
+        .mode-btn{flex:1;padding:8px;text-align:center;font-family:'Bebas Neue',sans-serif;font-size:.8rem;letter-spacing:2px;cursor:pointer;background:transparent;border:none;color:var(--tx-m);transition:0.15s;}
+        .mode-btn.active{background:var(--elem);color:#000;}
+        .ed-export{width:100%;padding:10px;margin-top:12px;background:transparent;border:1px solid var(--elem);color:var(--elem);font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:3px;cursor:pointer;transition:0.15s;}
+        .ed-export:hover{background:var(--elem);color:#000;}
+        .img-hint{font-size:.5rem;color:var(--tx-l);text-align:center;margin-top:4px;letter-spacing:1px;}
+
+        /* ════ CARD ════ */
+        .card-h{width:960px;height:540px;position:relative;overflow:hidden;background:#0D0D14;}
+        .card-v{width:405px;height:720px;position:relative;overflow:hidden;background:#0D0D14;}
+        .card-img-wrap{position:absolute;top:0;left:0;overflow:hidden;cursor:grab;z-index:1;}
+        .card-img-wrap:active{cursor:grabbing;}
+        .card-h .card-img-wrap{width:60%;height:100%;}
+        .card-v .card-img-wrap{width:100%;height:55%;}
+        .card-img{position:absolute;width:200%;height:200%;top:-50%;left:-50%;background-size:contain;background-position:center;background-repeat:no-repeat;transform-origin:center;}
+        .card-h .card-img-wrap::after{content:'';position:absolute;top:0;right:0;width:50%;height:100%;background:linear-gradient(to right,transparent,#0D0D14);z-index:2;pointer-events:none;}
+        .card-v .card-img-wrap::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:50%;background:linear-gradient(to bottom,transparent,#0D0D14);z-index:2;pointer-events:none;}
+
+        /* Diagonal slash */
+        .card-slash{position:absolute;z-index:3;pointer-events:none;}
+        .card-h .card-slash{top:0;right:38%;width:2px;height:100%;background:linear-gradient(to bottom,transparent 10%,var(--elem) 50%,transparent 90%);opacity:0.12;transform:skewX(-8deg);}
+        .card-v .card-slash{bottom:44%;left:0;width:100%;height:2px;background:linear-gradient(to right,transparent 10%,var(--elem) 50%,transparent 90%);opacity:0.12;}
+
+        /* ARCH watermark (배경 꽉 채움) */
+        .card-arch-mark{position:absolute;z-index:2;pointer-events:none;font-family:'Bebas Neue',sans-serif;color:rgba(255,255,255,0.025);writing-mode:vertical-rl;text-orientation:mixed;line-height:1;}
+        .card-h .card-arch-mark{top:-10px;right:-5px;font-size:420px;letter-spacing:15px;}
+        .card-v .card-arch-mark{top:-5px;right:-3px;font-size:280px;letter-spacing:10px;}
+
+        /* System text (1줄) */
+        .card-sys-text{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:7px;color:rgba(255,255,255,0.15);letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
+        .card-h .card-sys-text{top:18px;right:18px;}
+        .card-v .card-sys-text{top:12px;right:12px;font-size:5.5px;}
+
+        /* Tech SVG decorations (강화) */
+        .card-tech{position:absolute;z-index:3;pointer-events:none;}
+        .card-tech svg{width:100%;height:100%;overflow:visible;}
+        .card-tech-tl{top:28px;left:52%;width:80px;height:80px;}
+        .card-v .card-tech-tl{top:48%;left:10px;width:60px;height:60px;}
+        .card-tech-br{bottom:28px;right:42%;width:50px;height:50px;}
+        .card-tech-mid{position:absolute;z-index:3;pointer-events:none;}
+        .card-h .card-tech-mid{top:50%;right:5%;width:30px;height:30px;transform:translateY(-50%);}
+        .card-v .card-tech-mid{bottom:20%;right:8%;width:24px;height:24px;}
+
+        /* Codename BG watermark */
+        .card-codename-bg{position:absolute;z-index:3;pointer-events:none;font-family:'Bebas Neue',sans-serif;text-transform:uppercase;line-height:0.85;color:rgba(255,255,255,0.035);white-space:nowrap;overflow:hidden;}
+        .card-h .card-codename-bg{bottom:14px;left:16px;font-size:110px;letter-spacing:5px;}
+        .card-v .card-codename-bg{bottom:6px;left:10px;font-size:64px;letter-spacing:3px;}
+
+        /* Element icon (왼쪽으로 이동, 더 크고 선명, 테마색) */
+        .card-element{position:absolute;z-index:4;pointer-events:none;opacity:0.15;}
+        .card-h .card-element{bottom:20px;right:120px;width:160px;height:160px;}
+        .card-v .card-element{bottom:10px;right:60px;width:100px;height:100px;}
+        .card-element svg{width:100%;height:100%;fill:var(--elem);}
+
+        /* Grid lines */
+        .card-gridlines{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0.025;}
+        .card-gridlines::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(255,255,255,0.4) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(255,255,255,0.4) 60px);}
+
+        /* Topbar */
+        .card-topbar{position:absolute;top:0;left:0;right:0;height:2px;z-index:6;background:linear-gradient(to right,var(--elem),transparent 70%);opacity:0.35;}
+
+        /* Corners */
+        .card-corner{position:absolute;width:16px;height:16px;z-index:6;pointer-events:none;}
+        .card-corner::before,.card-corner::after{content:'';position:absolute;background:var(--elem);opacity:0.2;}
+        .cc-tl{top:10px;left:10px;}.cc-tl::before{top:0;left:0;width:16px;height:1px;}.cc-tl::after{top:0;left:0;width:1px;height:16px;}
+        .cc-tr{top:10px;right:10px;}.cc-tr::before{top:0;right:0;width:16px;height:1px;}.cc-tr::after{top:0;right:0;width:1px;height:16px;}
+        .cc-bl{bottom:10px;left:10px;}.cc-bl::before{bottom:0;left:0;width:16px;height:1px;}.cc-bl::after{bottom:0;left:0;width:1px;height:16px;}
+        .cc-br{bottom:10px;right:10px;}.cc-br::before{bottom:0;right:0;width:16px;height:1px;}.cc-br::after{bottom:0;right:0;width:1px;height:16px;}
+
+        /* Info area */
+        .card-info{position:absolute;z-index:5;display:flex;flex-direction:column;}
+        .card-h .card-info{top:0;right:0;width:46%;height:100%;padding:36px 30px 30px 16px;justify-content:center;}
+        .card-v .card-info{bottom:0;left:0;width:100%;height:48%;padding:16px 24px 20px;}
+        .card-modifier{font-family:'Playfair Display',serif;font-size:12px;font-style:italic;letter-spacing:2px;color:var(--elem);opacity:0.65;margin-bottom:3px;text-transform:uppercase;}
+        .card-danger{display:inline-flex;align-items:center;gap:3px;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--elem);border:1px solid;padding:2px 8px;margin-bottom:8px;width:fit-content;opacity:0.5;}
+        .card-type-badge{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--elem);opacity:0.5;margin-bottom:8px;}
+        .card-codename-en{font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:0.88;letter-spacing:3px;color:#fff;text-transform:uppercase;margin-bottom:1px;}
+        .card-v .card-codename-en{font-size:44px;}
+        .card-codename-kr{font-family:'Pretendard',sans-serif;font-size:16px;font-weight:600;color:rgba(255,255,255,0.55);letter-spacing:-0.04em;transform:scaleX(0.97);transform-origin:left;margin-bottom:12px;}
+        .card-v .card-codename-kr{font-size:13px;margin-bottom:8px;}
+        .card-stats{display:grid;gap:4px 0;}
+        .card-h .card-stats{grid-template-columns:78px 1fr;align-items:baseline;}
+        .card-v .card-stats{grid-template-columns:68px 1fr;align-items:baseline;}
+        .card-stat-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--elem);text-transform:uppercase;font-weight:600;opacity:0.55;}
+        .card-stat-value{font-family:'Pretendard',sans-serif;font-size:12px;color:rgba(255,255,255,0.7);font-weight:300;letter-spacing:-0.04em;transform:scaleX(0.97);transform-origin:left;}
+        .card-modifier2{font-family:'Playfair Display',serif;font-size:10px;font-style:italic;letter-spacing:1px;color:rgba(255,255,255,0.25);margin-top:10px;text-transform:uppercase;white-space:pre-line;}
+        .card-v .card-modifier2{margin-top:6px;font-size:9px;}
+
+        @media(max-width:900px){.app{flex-direction:column;}.editor-panel{width:100%;min-width:auto;max-height:none;}.preview-panel{padding:12px;}.card-h,.card-v{width:100%;height:auto;aspect-ratio:auto;}}
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="editor-panel">
+        <div class="ed-title">ARCH PROFILE</div>
+        <div class="ed-sub">CHARACTER CARD GENERATOR</div>
+        <div class="mode-sw">
+            <button class="mode-btn active" data-mode="h" onclick="setMode('h')">HORIZONTAL</button>
+            <button class="mode-btn" data-mode="v" onclick="setMode('v')">VERTICAL</button>
+        </div>
+
+        <div class="ed-sec">IMAGE & THEME</div>
+        <div class="ed-row"><div class="ed-label">Theme Color <span>테마색</span></div>
+            <input type="color" id="f_theme" value="#AAAACC" style="width:100%;height:28px;background:var(--bg);border:1px solid var(--bdr);cursor:pointer;padding:1px;">
+        </div>
+        <div class="ed-file-row">
+            <label class="ed-file" id="fileLabel">✦ 이미지 업로드<input type="file" id="imgFile" accept="image/*"></label>
+            <button class="ed-file-del" onclick="delImage()">삭제</button>
+        </div>
+        <div class="img-hint">드래그=이동 · 휠=확대 · Shift+휠=회전</div>
+
+        <div class="ed-sec">PROFILE</div>
+        <div class="ed-row"><div class="ed-label">Modifier <span>수식어</span></div><input class="ed-input" id="f_modifier" placeholder="The Untamed Storm"></div>
+        <div class="ed-row"><div class="ed-label">Danger Level <span>위험등급</span></div><input class="ed-input" id="f_danger" placeholder="S+"></div>
+        <div class="ed-row"><div class="ed-label">Subtitle <span>수식어2 (엔터 가능)</span></div><textarea class="ed-input" id="f_modifier2" placeholder="Blade of the Forgotten" rows="2" style="resize:none;height:auto;"></textarea></div>
+        <div class="ed-row"><div class="ed-label">Type <span>유형</span></div>
+            <div class="ed-toggle" id="typeToggle">
+                <button class="ed-tog-btn active" data-val="SENTINEL" onclick="setType(this)">Sentinel</button>
+                <button class="ed-tog-btn" data-val="GUIDE" onclick="setType(this)">Guide</button>
+                <button class="ed-tog-btn" data-val="" onclick="setType(this)">직접입력</button>
+            </div>
+            <input class="ed-input" id="f_type_custom" placeholder="직접 입력" style="display:none;margin-top:4px;">
+        </div>
+        <div class="ed-row"><div class="ed-label">Codename (EN)</div><input class="ed-input" id="f_codename_en" placeholder="OVERLOAD" style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;"></div>
+        <div class="ed-row"><div class="ed-label">Codename <span>코드네임</span></div><input class="ed-input" id="f_codename_kr" placeholder="오버로드"></div>
+
+        <div class="ed-sec">DETAILS</div>
+        <div class="ed-row"><div class="ed-label">Real Name <span>본명</span></div><input class="ed-input" id="f_name" placeholder="홍길동"></div>
+        <div class="ed-row" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div><div class="ed-label">Age <span>나이</span></div><input class="ed-input" id="f_age" placeholder="25"></div>
+            <div><div class="ed-label">Nation <span>국적</span></div><input class="ed-input" id="f_nation" placeholder="KR"></div>
+        </div>
+        <div class="ed-row" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div><div class="ed-label">Rank <span>등급</span></div><input class="ed-input" id="f_rank" placeholder="S"></div>
+            <div><div class="ed-label">Element <span>속성</span></div>
+                <select class="ed-select" id="f_element">
+                    <option value="무속성">무속성</option><option value="불">불 Fire</option><option value="물">물 Water</option>
+                    <option value="바람">바람 Wind</option><option value="풀">풀 Nature</option>
+                    <option value="번개">번개 Lightning</option><option value="얼음">얼음 Ice</option>
+                </select>
+            </div>
+        </div>
+        <div class="ed-row"><div class="ed-label">Team <span>소속 팀</span></div>
+            <select class="ed-select" id="f_team_sel">
+                <option value="ARCH-PRIMA">ARCH-PRIMA</option><option value="VANGUARD-1">VANGUARD-1</option>
+                <option value="VANGUARD-2">VANGUARD-2</option><option value="AGENT">AGENT</option>
+                <option value="ACOLYTE">ACOLYTE</option><option value="CORE">CORE</option>
+                <option value="R.S.T">R.S.T</option><option value="SUPPORT">SUPPORT</option>
+                <option value="__custom">직접 입력</option>
+            </select>
+            <input class="ed-input" id="f_team_custom" placeholder="팀명 직접 입력" style="display:none;margin-top:4px;">
+        </div>
+        <button class="ed-export" onclick="exportCard()">EXPORT CARD</button>
+    </div>
+
+    <div class="preview-panel">
+        <div class="card-h" id="cardPreview">
+            <div class="card-topbar"></div>
+            <div class="card-gridlines"></div>
+            <div class="card-corner cc-tl"></div><div class="card-corner cc-tr"></div>
+            <div class="card-corner cc-bl"></div><div class="card-corner cc-br"></div>
+            <div class="card-slash"></div>
+            <div class="card-arch-mark">ARCH</div>
+            <div class="card-sys-text" id="cardSysText">AEGIS ARCH // AGENT PROFILE CLASSIFIED // LOGIN VERIFIED // INSTALL COMPLETE</div>
+            <div class="card-img-wrap" id="cardImgWrap"><div class="card-img" id="cardImg"></div></div>
+            <div class="card-element" id="cardElemIcon"></div>
+            <div class="card-codename-bg" id="cardCodenameBg">CODENAME</div>
+            <!-- Tech decorations (강화 + 글래스) -->
+            <div class="card-tech card-tech-tl"><svg viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="18" fill="none" stroke="var(--elem)" stroke-width="0.6" opacity="0.25"/>
+                <circle cx="40" cy="40" r="10" fill="none" stroke="var(--elem)" stroke-width="0.4" opacity="0.15" stroke-dasharray="3 3"/>
+                <circle cx="40" cy="40" r="2.5" fill="var(--elem)" opacity="0.2"/>
+                <line x1="0" y1="40" x2="22" y2="40" stroke="var(--elem)" stroke-width="0.5" opacity="0.25"/>
+                <line x1="58" y1="40" x2="80" y2="40" stroke="var(--elem)" stroke-width="0.5" opacity="0.25"/>
+                <line x1="40" y1="0" x2="40" y2="22" stroke="var(--elem)" stroke-width="0.5" opacity="0.25"/>
+                <line x1="40" y1="58" x2="40" y2="80" stroke="var(--elem)" stroke-width="0.5" opacity="0.25"/>
+                <rect x="28" y="28" width="24" height="24" fill="none" stroke="var(--elem)" stroke-width="0.4" opacity="0.12" transform="rotate(45 40 40)"/>
+                <path d="M40,26 L42,22 M40,54 L42,58 M26,40 L22,42 M54,40 L58,42" stroke="var(--elem)" stroke-width="0.4" opacity="0.2"/>
+            </svg></div>
+            <div class="card-tech card-tech-br"><svg viewBox="0 0 50 50">
+                <rect x="5" y="5" width="40" height="40" fill="none" stroke="var(--elem)" stroke-width="0.4" opacity="0.12" rx="2"/>
+                <line x1="5" y1="25" x2="45" y2="25" stroke="var(--elem)" stroke-width="0.3" opacity="0.1"/>
+                <line x1="25" y1="5" x2="25" y2="45" stroke="var(--elem)" stroke-width="0.3" opacity="0.1"/>
+                <circle cx="25" cy="25" r="6" fill="none" stroke="var(--elem)" stroke-width="0.5" opacity="0.2"/>
+                <circle cx="25" cy="25" r="1.5" fill="var(--elem)" opacity="0.2"/>
+                <rect x="15" y="15" width="20" height="20" fill="none" stroke="var(--elem)" stroke-width="0.3" opacity="0.08" transform="rotate(45 25 25)"/>
+            </svg></div>
+            <div class="card-tech card-tech-mid" style="position:absolute;"><svg viewBox="0 0 30 30">
+                <polygon points="15,2 28,15 15,28 2,15" fill="none" stroke="var(--elem)" stroke-width="0.5" opacity="0.2"/>
+                <polygon points="15,8 22,15 15,22 8,15" fill="none" stroke="var(--elem)" stroke-width="0.3" opacity="0.12"/>
+                <circle cx="15" cy="15" r="1.5" fill="var(--elem)" opacity="0.25"/>
+            </svg></div>
+            <div class="card-info">
+                <div class="card-modifier" id="cardModifier">MODIFIER</div>
+                <div class="card-danger" id="cardDanger">DANGER LV. —</div>
+                <div class="card-type-badge" id="cardType">[ SENTINEL ]</div>
+                <div class="card-codename-en" id="cardCodenameEn">CODENAME</div>
+                <div class="card-codename-kr" id="cardCodenameKr">코드네임</div>
+                <div class="card-stats">
+                    <div class="card-stat-label">NAME</div><div class="card-stat-value" id="csName">—</div>
+                    <div class="card-stat-label">AGE</div><div class="card-stat-value" id="csAge">—</div>
+                    <div class="card-stat-label">NATION</div><div class="card-stat-value" id="csNation">—</div>
+                    <div class="card-stat-label">RANK</div><div class="card-stat-value" id="csRank">—</div>
+                    <div class="card-stat-label">ELEMENT</div><div class="card-stat-value" id="csElement">—</div>
+                    <div class="card-stat-label">TEAM</div><div class="card-stat-value" id="csTeam">—</div>
+                </div>
+                <div class="card-modifier2" id="cardModifier2">SUBTITLE</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+const ELEMENTS = {
+  "번개":{b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0zMS4wIC0zNC4wIDg0Ny4wIDkwNS4wIj48cGF0aCBkPSJNMjI1LDg2NmgzbDQsMiwxMCwyLDE3LDYsMTMsNyw1LDQsOSw5LDYsNyw3LDEwLDYsMTJ2Mi0zbC0xLTF2LTRsLTQtMTMtMy02LTYtOS00LTUtNy03LTgtNi0xMi02LTctMmgtNmwtMS0xaC01bC0xMiwxLTEsMWgtM1oiLz48cGF0aCBkPSJNNDQ2LDgxMWwtMSwyLTUsNS02LDUtNiw0LTE0LDdoLTVsLTE1LDQtMTAsNS0xNSwxMS01LDUsNy00LDktMywxMC0yaDEybDUtMSw2LTIsOC00LDMtMiwxMi0xMiw2LTksMi00di0ybDItM1oiLz48cGF0aCBkPSJNMTgyLDgxMWwzLDV2MWwzLDYsNiw4LDgsOCw5LDYsNCwyLDExLDMsMTUsMSwxMywzLDMsMSw5LDUtMi0yaC0xbC02LTYtOC02LTYtNC02LTMtMTItNC01LTFoLTdsLTctMy0xMS03LTctNi00LTR2LTFsLTItMloiLz48cGF0aCBkPSJNMzE0LDc5NGwyLDIsNCw2LDMsNS02LDUtMSwzLTIsMi0yLTItMy01LTQtMy0xLTIsNi02LDItM3YtMWwyLTFaIi8+PHBhdGggZD0iTTMxNCw3ODJ2MmwtMSwxdjJsLTMsNi0yLDMtNiw2LTYsMywzLDIsNCwyLDQsNCwzLDQsMyw2djJsMSwxdjItMmwxLTF2LTJsMy02LDMtNCw1LTUsNS0zLTQtMi03LTctNC02LTEtNS0xLTF2LTJaIi8+PHBhdGggZD0iTTQ2MSw3MzhsLTIzLDEyLTE1LDExLTE4LDE5LTE4LDM1LTE2LDE1LTE2LDEwLTEtMiwzLTQtMTUsMTctMTAsMTgtMTAsMjgtNSwyMy0yLDMyLDEtMTIsNC0xNiwzLTUsMSwzLDgtMTUsMTYtMTgsMTEtOCw0NS0xNS0yMi0yLTE3LDQtMjAsMTMtOSwxMC04LDEzLTEtMyw5LTE5LDE4LTI3LDEzLTEzLDE2LTExLDIxLTExLDE5LTE3LDEwLTE0LDE0LTI5LDE0LTIyWiIvPjxwYXRoIGQ9Ik0xNjcsNzM4bDE0LDIyLDE0LDI5LDEzLDE3LDExLDEwLDM4LDIzLDE5LDE4LDYsOCwxMSwxOCw5LDIwLDEwLDM4djktMjFsLTMtMjAtNy0yNi0xNC0yOS0xNy0yMSwxLDctMTctMTEtMTEtMTAtNi04LTYtMTYtOC0xNC0xMS0xMy0yMC0xNi0yNi0xNFoiLz48cGF0aCBkPSJNMzAwLDczNnYybC0xLDF2MmwtMyw2LTQsNi0zLDQtMTcsMTctMyw1djJsLTMsNS0zLDN2MWwtMiwyLDItMiwzLTEsNi00LDktNyw3LTgsNS04LDQtOSwzLTExdi02WiIvPjxwYXRoIGQ9Ik0zMjcsNzMzdjRsMSwxdjVsMiw4LDMsOCw0LDcsNCw2LDEwLDEwLDksNiw1LDIsMiwyLTQtNC0zLTQtMy03LTItMy03LTdoLTFsLTYtNi04LTExLTQtOC0yLTZ2LTNaIi8+PHBhdGggZD0iTTMxNCw2NTF2NmwtMSwxdjdsLTIsMTEtMywxMS0yLDUtMyw1LTksOCw2LDMsNyw3LDQsOCwyLDYsMSw1djUtNmwyLTgsMi01LDMtNSw4LTgsMy0yaDJsLTktOC01LTktMy0xMC0yLTExLTEtOHYtOFoiLz48L3N2Zz4=",color:"#FFCC00",en:"Fulmen"},
+  "얼음":{b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0zNy4wIC01NC4wIDg2Ny4wIDkwNC4wIj48cGF0aCBkPSJNNjc0LDg0NXY1bC0xLDEtNSwzM3Y4bC0yLDEwLTItM3YtMTNsLTItMTUtNC0yMHYtNmwtNSwxNnY4bDcsNDAsMiwyMCwzLDE5LDEsMXYzLTZsNC0xOXYtN2w1LTMxLDQtMTl2LTlsLTQtMTMtMS0xdi0yWiIvPjxwYXRoIGQ9Ik02NjYsODMxbC0yLDQtMiw2djJsMSwzLDIsOCwxLDF2My00bDEtNCwzLTgtMi02LTItM3YtMloiLz48cGF0aCBkPSJNNjk5LDgyNmwxLDMsNSw5djJsMiw0LDEsMWgxbDIsMiw1LDMsOCw0LDIsMiwyLDEtMS0ydi0ybC0zLTYtNi0xMS0yLTItMTctOFoiLz48cGF0aCBkPSJNNjMzLDgyNWwtMiwxLTMsMmgtMWwtOCw1LTQsMS01LDktNywxNCwyLTFoMWwyLTIsNS0yLDUtNCwzLTEsMi0yaDFsMS0zLDQtNywyLTV2LTJsMS0xLDEtMloiLz48cGF0aCBkPSJNNzAyLDc5Nmw0LDIsNSwyaDNsMy0xLDgtMy00LTEtMy0yLTQtMWgtM2wtNSwyLTQsMloiLz48cGF0aCBkPSJNNjA1LDc5Nmw1LDIsNiwyaDNsOS00LTQtMS0yLTItMy0xaC00bC0zLDEtMywyLTQsMVoiLz48cGF0aCBkPSJNNjY0LDc4NmgzbDMsNSw0LDMsMSw0LTYsNS0zLDUtMi0yLTItNC01LTQtMS0yLDctNywxLTNaIi8+PHBhdGggZD0iTTcxOSw3ODhoM2wxLDEsMjYsNWgxMGw1LDItMjMsMy0yMiw1LDMsMiw3LDMsNDMtOCwyNi00aDdsMS0xaDctN2wtMjctNC00OS05LTExLDVaIi8+PHBhdGggZD0iTTYxMiw4MDRsLTIyLTUtMjQtMyw2LTJoOWwyMy00LDUtMmgzbC05LTUtMjEsMy0zNyw3LTIwLDItMSwxaC01LDZsMSwxaDdsMjAsMyw2LDIsNDQsNyw1LTNoMmwyLTJaIi8+PHBhdGggZD0iTTY2Niw3NzZsLTEsMy0zLDYtMTAsMTAtMywxLDQsMiw4LDgsMiwzLDEsMiwyLDZ2LTJsMS0xdi0ybDEtMiw0LTYsNS01LDUtMy00LTItNy03LTItMy0zLTZ2LTJaIi8+PHBhdGggZD0iTTY2Niw3MzR2MmwtMSwxdjNsLTIsNC0xLDV2MmwxLDMsMSwxdjJsMiw0LDQtMTItMi04LTItNHYtM1oiLz48cGF0aCBkPSJNNzMwLDczM2wtMiwxLTIsMi04LDQtMTEsNy0xLDQtMiw1LTUsMTAsMi0xLDYtNCw4LTMsMi0xLDEtMSw1LTExLDItMiw1LTEwWiIvPjxwYXRoIGQ9Ik02MDIsNzMzbDIsMyw5LDE5LDIsMiwxNSw3LDIsMi0xLTJ2LTJsLTMtNS0yLTctMS0yLTItMi0xMS03LTgtNC0yLTJaIi8+PHBhdGggZD0iTTY2Niw2Mjl2M2wtMSwxLTEsNnY3bC01LDM0LTYsMzQtMSwxMyw0LDEwdjNsMiw0di02bDItNiw0LTMxdi0xNGwyLTMsNCwzOSwzLDE3LDEsMXY0LTNsNi0xNy0yLTE1LTYtMzItMS0xNC0zLTE0di03bC0yLTd2LTdaIi8+PC9zdmc+",color:"#88DDFF",en:"Glacies"},
+  "풀":{b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii03MS4wIC04MC4wIDExNDQuMCA5MDYuMCI+PHBhdGggZD0iTTEwNDEsODIxbC02Niw3NSwyMSwxLTE3LDI4LTYsOC0xMiwyMS02LDgsNjItNjYsMTItMTQtMjItMSwzLTQsNC05LDUtNyw0LTksNi05LDQtOSw4LTEzWiIvPjxwYXRoIGQ9Ik0xMDEwLDc4OHYxbDIsMyw3LDctNyw2LTIsNC0yLDItMy01LTctNyw2LTYsMy01aDNaIi8+PHBhdGggZD0iTTEwMDgsNzc3djJsLTQsOC0yLDMtNSw1LTYsNCw0LDIsOSw5LDMsNiwxLDN2MmwyLTYsMy01LDEwLTEwLDMtMS00LTItOC04LTItMy0zLTYtMS0zWiIvPjxwYXRoIGQ9Ik05NzIsNzUwbC0yNiwyNy0zLDItMTksMjAsMywzLDYsNCw1LDUsMjAsMTYsOSw2LDUsNSw5LDdoMWw0LDRoMWwyLDItNS01LTgtMTEtMTQtMTctNi02LTQtNi01LTUtMS0yLDEwLTIwLDktMTUsNy0xNFoiLz48cGF0aCBkPSJNMTAyOCw3NDhsMiwydjFsNSw1LDgsMTB2MWwxMywxNiwxMywxNXYzbC00LDgtOSwxNS03LDE1LTIsMi00LDgsMzYtMzZ2LTFsMTMtMTMtMi0yLTUtMy0yMS0xOC0xOS0xNS0xMy05LTQtNFoiLz48cGF0aCBkPSJNMTA2OCw2MjBsLTQ0LDUxLTMyLDM1LTYsOCwyMiwxLTMwLDU3LTMsNCw2Ni03NS0yMS0yLDQtNSwxMi0yMiwyNS00Miw3LTEwWiIvPjwvc3ZnPg==",color:"#66CC44",en:"Verde"},
+  "무속성":{b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii01NC4wIC00My4wIDEyNDguMCAxMjgzLjAiPjxwYXRoIGQ9Ik0xMTQ2LDM1OGwtMiw2LTQsOC0yLDMtNiw2djNsNCwxMiw0LDIwLDQsMzIsMiwyNXYtMTNsNC0zOCw0LTIyLDItOCw0LTExLTgtNy0yLTMtNC05di00WiIvPjxwYXRoIGQ9Ik0xMjM1LDMzNGwtOSw4aC0xbC05LDktMyw3LTcsMTAtOSw5LTcsNS05LDUtOCw4LTUsNnYxbC0zLDNoM2wxMi00LDktNCwxNC05LDE0LTE0LDUtNyw2LTExLDUtMTQsMi04WiIvPjxwYXRoIGQ9Ik0xMDU3LDMzM2wxLDJ2NWw1LDE0LDQsOCw4LDEyLDE0LDE0LDcsNSw1LDMsMTEsNSwxMSwzLDEsMWgybC00LTYtMTAtMTEtMTMtOC00LTMtMTAtMTAtNS03LTQtOC0xMy0xNGgtMWwtNS01WiIvPjxwYXRoIGQ9Ik0xMTQ1LDMwNWwyLDIsMyw1LDMsM2gxbDIsMi0yLDJoLTFsLTMsMy0zLDZoLTN2LTFsLTItMy02LTV2LTRsNS00LDQtNloiLz48cGF0aCBkPSJNMTE4OSwzMTZoM2wxMCw0LDMsMiw3LDdoMmwzLTEsMS0xLDEwLTMsMjAtNCwzNS00aDExLThsLTEtMWgtOWwtMTctMi0xOS0zLTE3LTQtNi0yLTMtMmgtMmwtOSw5LTYsMy01LDEtMSwxaC0yWiIvPjxwYXRoIGQ9Ik0xMTAxLDMxNmgtMmwtMS0xaC0zbC05LTUtNS01LTItNC0zLDItNSwyLTEwLDMtOSwyLTE5LDMtMjYsM2gtMTAsMTJsMzgsNSwxOCw0LDcsMiwzLDJoMmwyLDEsNy04LDUtMyw1LTJoM2wyLTFaIi8+PHBhdGggZD0iTTExNDYsMjk1bC00LDgtMyw0LTcsNy01LDMsNCwyLDMsM2gxbDIsMiw0LDUsNCw4djJsMS0zLDMtNiwyLTMsOC04LDQtMi00LTItOC04LTItMy0zLTZ2LTNaIi8+PHBhdGggZD0iTTExMjYsMjI4bC0yLDFoLTNsLTQsMS0xNCw2LTE1LDEwLTEyLDEyLTcsMTAtNCw4LTMsNy0zLDl2M2wtMSwxdjJsNS0zLDEyLTExLDMtNSwyLTUsNy0xMCw4LTgsNi00LDktNSwxMS0xMiw1LTdaIi8+PHBhdGggZD0iTTExNjUsMjI3bDYsN3YxbDExLDEyLDUsMiw5LDYsMTEsMTEsNSw3LDQsOSwxMywxMyw1LDMtMS02LTUtMTQtNS0xMC03LTEwLTE0LTE0LTYtNC0xNS04LTgtMy04LTJaIi8+PHBhdGggZD0iTTExNDYsMTQ0bC0zLDM1LTUsNDAtMywxNi01LDE3LDgsNyw1LDksMyw5di00bDUtMTEsMi0zLDgtNy02LTIxLTQtMjYtNS00OXYtMTJaIi8+PC9zdmc+",color:"#AAAACC",en:"Non-Attribute"},
+  "바람":{b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii01OS4wIC05My4wIDkxMi4wIDEwNzEuMCI+PHBhdGggZD0iTTczOCwzNDloMmwzLDJoMmwxMCw1LDEwLDcsMTQsMTQsNywxMCwyLDUtMi02LTYtMTItMi0zLTktOS02LTQtNi0zLTUtMi0xMS0zLTEtMWgtMloiLz48cGF0aCBkPSJNODg3LDM0OGgtMmwtMSwxLTgsMi0xMyw1LTcsNC02LDUtMiwyLTQsNS03LDEzdjJsLTIsNCwyLTUsNy0xMCwxMi0xMiw1LTQsOC01LDgtNCw1LTJoMmwxLTFoMloiLz48cGF0aCBkPSJNOTczLDMxNmwtNTMtMS0yOSwzLTIzLDYtMTMsNi0xMiw4LTEwLDExLTYsMTEtOCwyNy01LDM3LTIsNDcsNS00NSw2LTI4LDYtMTcsNS0xMCwxMy0xNyw5LTgsMTItOCwyNC0xMCwzOC04LDQzLTRaIi8+PHBhdGggZD0iTTY0OSwzMTZsMjEsMSwyNSwzLDI5LDYsMTgsNiwxNiw4LDEwLDcsMTUsMTUsNywxMSw2LDE0LDgsMzEsNiw0MnYxMGwtMi01NC01LTMzLTMtMTItOC0xOC0xMS0xMy0yMC0xMy0xMy01LTE2LTQtMjktMy01NCwxWiIvPjxwYXRoIGQ9Ik04NDgsMzE3aDNsNCwyLDQtMSw1LTJoNS03bC01LTEtMS0xaC0zbC0yLDEtMywyWiIvPjxwYXRoIGQ9Ik03NzUsMzE2bC01LTMtMiwxLTcsMmgtNyw0bDEsMWg0bDMsMiwzLDEsMi0xLDItMiwyLTFaIi8+PHBhdGggZD0iTTgxMSwzMTBsMywzLDEsMyw2LDctMywyLTMsNC0yLDN2MWgtM3YtMWwtNi04aC0xbC0yLTIsMi0yaDFsMy0zLDItMywyLTRaIi8+PHBhdGggZD0iTTgxMiwzMDFsLTEsMy0zLDYtMyw0LTUsNS01LDMsNiw0LDMsMywzLDQsNCw4LDEsM3YtM2wzLTYsMi0zLDExLTEwLTQtMi02LTYtMy00LTEtMi0yLTV2LTJaIi8+PHBhdGggZD0iTTgxMSwxMzdsLTIsNDItNSw0NC01LDI0LTEwLDIzLTYsOC0xOSwxNy0yMSwxMC0yMyw1LDIzLTEsMjYtNSwxNC03LDktOSw4LTE1LDUtMTgsNi01MiwyLDQsMSwyMyw2LDM0LDYsMTYsOSwxMywxMiw4LDE2LDUsNDIsNC0yNS01LTE5LTktMTAtNy0xOC0yMC05LTIyLTUtMjItOC04OFoiLz48L3N2Zz4=",color:"#44DDAA",en:"Aero"},
+  "물":{b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii02Ni4wIC01Ni4wIDU3NC4wIDU1NS4wIj48cGF0aCBkPSJNNDk0LDMyMmwyLDIsMiw0LDUsNHYzbC01LDQtMiw0LTQsMS0xLTMtNy02di0zbDctNiwxLTMsMi0xWiIvPjxwYXRoIGQ9Ik00OTQsMzExdjJsLTEsMXYybC0xLDItNCw2LTcsNy00LDMsNCwyLDYsNiw0LDYsMiw0djJsMSwxdjItM2wxLTMsMi00LDQtNiw1LTUsMy0yaDJsLTUtMy02LTYtMi0zLTMtNnYtMmwtMS0xdi0yWiIvPjxwYXRoIGQ9Ik00ODIsMjUzbC0xMywyNS0yNiwzNS03LDE2LTEsNXYxM2wzLDEwLDcsMTEsOCw4LDgsNiwxMSwxMSw1LDcsNywxNCw0LDEzLDQsMjIsMSwxNHYtNGwtMS0xdi0yNmwtNC0yNi01LTE1LTktMTUtMTEtMTEtNi00LTExLTEyLTQtMTB2LTExbDQtMTMsMjYtMzksMTAtMjNaIi8+PHBhdGggZD0iTTUwMywyNDZsMywxMCwxMiwyNSwyMCwyOCw1LDEwLDIsN3YxNGwtNCw5LTMsNC0yNCwyMi05LDE1LTQsMTEtNCwyMS0yLDQxLDItMjQsNC0xOCw1LTEzLDktMTQsMzItMzIsMy02LDMtMTEtMS0xNS02LTE1LTMwLTQxLTktMTctNC0xMVoiLz48cGF0aCBkPSJNNDk0LDEyMGwtNCw0Ny0xMyw0NS0xOCwzNC00Miw1OC0xMCwyNywxLDIyLDEwLDIxLDEzLDEzLDI2LDE3LDEyLDEyLDQsOS0xMC0yMi0yNS0xNy0xNS0xNi03LTE4di0xN2w4LTIyLDM2LTUxLDE4LTMzLDktMjUsNy0zOSw3LDQwLDEwLDI3LDE2LDI5LDM4LDU0LDcsMTl2MThsLTYsMTYtMTUsMTctMjYsMTctMTAsMjMsMTMtMTksMzAtMjAsMTEtMTEsMTItMjgtMS0yMS04LTE5LTQzLTYxLTIxLTQxLTExLTQ0LTMtNDFaIi8+PC9zdmc+",color:"#4488FF",en:"Aqua"},
+  "불":{b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0zOC4wIC0zOC4wIDMzOS4wIDM2NS4wIj48cGF0aCBkPSJNMTgzLDMyMmwyLDIsMyw1LDQsMywxLDItNiw2LTEsMy0zLDMtMi0yLTItNC01LTQtMS0yLDYtNiw0LTZaIi8+PHBhdGggZD0iTTE4MywzMTB2M2wtMSwzLTIsNC0yLDMtOSw5LTQsMiw0LDIsOCw4LDIsMywzLDYsMSwzdjNsMi03LDMtNiwzLTQsNS01LDYtMy01LTItNy03LTQtNi0xLTItMi03WiIvPjxwYXRoIGQ9Ik0yODIsMjk2bDIsN3YyMGwtNCwxNS02LDEyLTcsMTAtMTksMTktMTIsOS0xMywxMy03LDEwLTUsMTAtMiw5LTIsNHYzbDEtNSwzLTYsNy0xMCwxNC0xMywyOC0xOSwxMy0xMyw3LTEwLDYtMTMsMy0xMnYtMThsLTMtMTMtNC05WiIvPjxwYXRoIGQ9Ik04NiwyOTZsLTUsMTMtMiw5djE4bDUsMTcsMyw2LDEwLDE0LDgsOCwxNCwxMSwxNiwxMCwxNywxNiw0LDYsNSwxMHYyLTJsLTItNHYtM2wtMi02LTUtMTAtNy0xMC0xMy0xMy0xMS04LTgtNy0xMy0xNC02LTktNy0xNS0zLTEzdi0xOWwxLTQsMS0xdi0yWiIvPjxwYXRoIGQ9Ik0xNDMsMjE0bC0yLDE0LTUsMTItOCwxMi0xNiwxOS04LDE1LTQsMTQtMSw5LDEsMTMsNCwxMyw4LDE0LDgsOSwxNSwxMiwxNiwxNiw5LDEzLDYsMTIsNiwyMCwyLDEzLDEsMjQsMi0yNi0xLTIxLTMtMTUtNS0xNC0xMC0xNi0zMy0zMS04LTEzLTQtMTN2LTIybDItOCw3LTE2LDE3LTI3LDQtMTN2LTE5WiIvPjxwYXRoIGQ9Ik0yMjYsMjEybC0xLDIsMSwyMyw0LDExLDEzLDIwLDgsMTYsNCwxNHYyMWwtNCwxMy02LDEwLTEyLDEzLTEzLDEwLTExLDExLTExLDE5LTQsMTItMywxOXYyNmwyLDEwdjhsMS0zMCwzLTE1LDEwLTI1LDE1LTIwLDE5LTE2LDE1LTE1LDktMTYsMy0xMSwxLTE0LTQtMjAtMTEtMjAtMTMtMTUtMTAtMTUtNS0xNS0xLTYsMS01WiIvPjxwYXRoIGQ9Ik0xODEsOThsNCwxNi0xLDIzLTQsMTQtMTUsMjktMywxNHYxM2w0LDE3djE4bC05LDIxLTE5LDIxLTEwLDE3LTMsMTB2MTZsMywxMC0xLTE1LDQtMTMsNy0xMCwxMC05LDEsMi02LDExLDgtMTIsMjEtMjMsNy0xNSw0LTI0LDgsMzEsMjIsMzcsNSwxMi05LTMzLDI2LDI5LDYsMTYtMSwxNyw0LTE4LTQtMjAtOC0xNC0yMi0yNi05LTIzLTEtMjEsNi0zMC02LDEzLTcsNi03LTItNC03di0xNGwxMS0yOCwyLTE5LTQtMTgtMTAtMTlaIi8+PC9zdmc+",color:"#FF4444",en:"Pyre"},
+};
+
+let mode='h', userTheme=null;
+const imgState={x:0,y:0,scale:1,rot:0};
+let currentType='SENTINEL';
+
+function setMode(m){
+    mode=m;
+    document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
+    document.getElementById('cardPreview').className=m==='h'?'card-h':'card-v';
+    applyImgTransform();
+}
+
+function setType(btn){
+    document.querySelectorAll('#typeToggle .ed-tog-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const v=btn.dataset.val;
+    const ci=document.getElementById('f_type_custom');
+    if(v===''){ci.style.display='block';currentType=ci.value||'';}
+    else{ci.style.display='none';currentType=v;}
+    updateCard();
+}
+document.getElementById('f_type_custom').addEventListener('input',e=>{currentType=e.target.value;updateCard();});
+
+// Team selector
+document.getElementById('f_team_sel').addEventListener('change',e=>{
+    const ci=document.getElementById('f_team_custom');
+    ci.style.display=e.target.value==='__custom'?'block':'none';
+    updateCard();
+});
+document.getElementById('f_team_custom').addEventListener('input',updateCard);
+
+// Theme color (독립 - 모드 변경에 안 바뀜)
+document.getElementById('f_theme').addEventListener('input',e=>{
+    userTheme=e.target.value;
+    document.documentElement.style.setProperty('--elem',e.target.value);
+    // 아이콘 색상도 테마색 반영
+    const elem=document.getElementById('f_element')?.value||'무속성';
+    const eData=ELEMENTS[elem];
+    if(eData){const iconEl=document.getElementById('cardElemIcon');iconEl.innerHTML=atob(eData.b64).replace(/<path/g,'<path fill="'+e.target.value+'"');}
+});
+
+// All inputs sync
+['modifier','danger','modifier2','codename_en','codename_kr','name','age','nation','rank','element'].forEach(f=>{
+    const el=document.getElementById('f_'+f);
+    if(el){el.addEventListener('input',updateCard);el.addEventListener('change',updateCard);}
+});
+
+function updateCard(){
+    const v=f=>document.getElementById('f_'+f)?.value||'';
+    document.getElementById('cardModifier').textContent=v('modifier')||'MODIFIER';
+    document.getElementById('cardDanger').textContent='DANGER LV. '+(v('danger')||'—');
+    document.getElementById('cardType').textContent=currentType?'[ '+currentType+' ]':'';
+    document.getElementById('cardCodenameEn').textContent=v('codename_en')||'CODENAME';
+    document.getElementById('cardCodenameKr').textContent=v('codename_kr')||'코드네임';
+    document.getElementById('cardCodenameBg').textContent=v('codename_en')||'CODENAME';
+    document.getElementById('csName').textContent=v('name')||'—';
+    document.getElementById('csAge').textContent=v('age')||'—';
+    document.getElementById('csNation').textContent=v('nation')||'—';
+    document.getElementById('csRank').textContent=v('rank')||'—';
+    // Modifier2 (줄바꿈 지원)
+    document.getElementById('cardModifier2').textContent=v('modifier2')||'SUBTITLE';
+    // Team
+    const tsel=document.getElementById('f_team_sel');
+    const team=tsel.value==='__custom'?document.getElementById('f_team_custom').value:tsel.value;
+    document.getElementById('csTeam').textContent=team||'—';
+    // Element (영어로 출력, 아이콘은 테마색 반영)
+    const elem=v('element')||'무속성';
+    const eData=ELEMENTS[elem];
+    if(eData){
+        document.getElementById('csElement').textContent=eData.en;
+        if(!userTheme){document.documentElement.style.setProperty('--elem',eData.color);document.getElementById('f_theme').value=eData.color;}
+        const useColor=userTheme||eData.color;
+        const iconEl=document.getElementById('cardElemIcon');
+        iconEl.innerHTML=atob(eData.b64).replace(/<path/g,'<path fill="'+useColor+'"');
+    }
+}
+
+// Image
+document.getElementById('imgFile').addEventListener('change',e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+        document.getElementById('cardImg').style.backgroundImage=`url('${ev.target.result}')`;
+        document.getElementById('fileLabel').innerHTML='✓ '+file.name+'<input type="file" id="imgFile" accept="image/*">';
+        document.getElementById('imgFile').addEventListener('change',arguments.callee);
+        imgState.x=0;imgState.y=0;imgState.scale=1;imgState.rot=0;
+        applyImgTransform();
+    };
+    reader.readAsDataURL(file);
+});
+
+function delImage(){
+    document.getElementById('cardImg').style.backgroundImage='none';
+    document.getElementById('fileLabel').innerHTML='✦ 이미지 업로드<input type="file" id="imgFile" accept="image/*">';
+    // Re-bind
+    document.getElementById('imgFile').addEventListener('change',function(e){
+        const file=e.target.files[0];if(!file)return;
+        const reader=new FileReader();
+        reader.onload=ev=>{
+            document.getElementById('cardImg').style.backgroundImage=`url('${ev.target.result}')`;
+            imgState.x=0;imgState.y=0;imgState.scale=1;imgState.rot=0;
+            applyImgTransform();
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function applyImgTransform(){
+    const el=document.getElementById('cardImg');
+    const s=imgState;
+    el.style.transform=`translate(${s.x}px,${s.y}px) scale(${s.scale}) rotate(${s.rot}deg)`;
+}
+
+const wrap=document.getElementById('cardImgWrap');
+let dragging=false,sx,sy;
+wrap.addEventListener('mousedown',e=>{dragging=true;sx=e.clientX;sy=e.clientY;e.preventDefault();});
+window.addEventListener('mousemove',e=>{if(!dragging)return;imgState.x+=e.clientX-sx;imgState.y+=e.clientY-sy;sx=e.clientX;sy=e.clientY;applyImgTransform();});
+window.addEventListener('mouseup',()=>{dragging=false;});
+wrap.addEventListener('wheel',e=>{e.preventDefault();if(e.shiftKey){imgState.rot+=e.deltaY>0?2:-2;}else{imgState.scale+=e.deltaY>0?-0.05:0.05;imgState.scale=Math.max(0.3,Math.min(5,imgState.scale));}applyImgTransform();},{passive:false});
+// Touch
+let lastTD=0;
+wrap.addEventListener('touchstart',e=>{if(e.touches.length===1){dragging=true;sx=e.touches[0].clientX;sy=e.touches[0].clientY;}if(e.touches.length===2){lastTD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}e.preventDefault();},{passive:false});
+wrap.addEventListener('touchmove',e=>{if(e.touches.length===1&&dragging){imgState.x+=e.touches[0].clientX-sx;imgState.y+=e.touches[0].clientY-sy;sx=e.touches[0].clientX;sy=e.touches[0].clientY;applyImgTransform();}if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);imgState.scale*=d/lastTD;imgState.scale=Math.max(0.3,Math.min(5,imgState.scale));lastTD=d;applyImgTransform();}e.preventDefault();},{passive:false});
+wrap.addEventListener('touchend',()=>{dragging=false;});
+
+async function exportCard(){
+    await document.fonts.ready;
+    const card=document.getElementById('cardPreview');
+    const canvas=await html2canvas(card,{backgroundColor:'#0D0D14',scale:2,useCORS:true,allowTaint:true});
+    const a=document.createElement('a');a.download='ARCH_PROFILE.png';a.href=canvas.toDataURL('image/png');a.click();
+}
+
+updateCard();
+</script>
+</body>
+</html>
