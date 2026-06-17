@@ -90,15 +90,20 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
 .card-h{width:960px;height:540px;position:relative;overflow:hidden;background:var(--acc-bg);box-shadow:0 20px 50px rgba(0,0,0,0.8);}
 .card-v{width:405px;height:720px;position:relative;overflow:hidden;background:var(--acc-bg);box-shadow:0 20px 50px rgba(0,0,0,0.8);}
 
-.card-img-wrap{position:absolute;top:0;left:0;overflow:hidden;cursor:grab;z-index:1;}
+.card-img-wrap{position:absolute;top:0;left:0;overflow:hidden;cursor:grab;z-index:1; transform:translateZ(0); -webkit-transform:translateZ(0);}
 .card-img-wrap:active{cursor:grabbing;}
 .card-img{position:absolute;width:200%;height:200%;top:-50%;left:-50%;background-size:contain;background-position:center;background-repeat:no-repeat;transform-origin:center;}
 
 .card-diag{position:absolute;z-index:3;pointer-events:none;overflow:hidden;}
 .card-topbar{position:absolute;top:0;left:0;right:0;height:2px;z-index:6;background:linear-gradient(to right,var(--acc),transparent 60%);opacity:0.3;}
 
+/* 🚨 여기가 핵심! 오버랩 기법 적용 (너비/높이 확장 및 위치 조정) 🚨 */
 .card-h .card-img-wrap{width:60%;height:100%;}
-.card-h .card-img-wrap::after{content:'';position:absolute;top:0;right:0;width:50%;height:100%;background:linear-gradient(to right,transparent,var(--acc-bg));z-index:2;pointer-events:none;}
+.card-h .card-img-wrap::after{content:'';position:absolute;top:0;right:-4px;width:calc(50% + 4px);height:100%;background:linear-gradient(to right,transparent,var(--acc-bg) 85%,var(--acc-bg) 100%);z-index:2;pointer-events:none;}
+
+.card-v .card-img-wrap{width:100%;height:60%;}
+.card-v .card-img-wrap::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:calc(50% + 4px);background:linear-gradient(to bottom,transparent,var(--acc-bg) 85%,var(--acc-bg) 100%);z-index:2;pointer-events:none;}
+
 .card-h .card-diag{top:0;left:0;width:100%;height:100%;}
 .card-h .card-diag::before{content:'';position:absolute;top:-20%;right:30%;width:1px;height:140%;background:linear-gradient(to bottom,var(--acc),transparent 40%,transparent 60%,var(--acc));opacity:0.12;transform:rotate(25deg);}
 .card-h .card-sys{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:6px;color:var(--acc-tx);opacity:0.12;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;top:14px;right:14px;}
@@ -111,8 +116,6 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
 .card-h .card-cn-kr{font-family:'Pretendard',sans-serif;font-size:16px;font-weight:600;color:var(--acc-tx);opacity:0.6;letter-spacing:-0.04em;transform:scaleX(0.97);transform-origin:left;margin-bottom:16px;}
 .card-h .card-stats{display:grid;gap:6px 0;grid-template-columns:85px 1fr;align-items:baseline;}
 
-.card-v .card-img-wrap{width:100%;height:60%;}
-.card-v .card-img-wrap::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:50%;background:linear-gradient(to bottom,transparent,var(--acc-bg) 90%);z-index:2;pointer-events:none;}
 .card-v .card-diag{display:none;}
 .card-v .card-sys{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:5px;color:var(--acc-tx);opacity:0.15;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;top:50%; left:12px; transform:translate(-50%, -50%) rotate(-90deg); transform-origin:center;}
 .card-v .card-arch{position:absolute;z-index:2;pointer-events:none;font-family:'Bebas Neue',sans-serif;color:var(--acc-tx);opacity:0.025;line-height:0.85;white-space:nowrap;top:30%; left:28px; font-size:100px; transform:translate(-50%, -50%) rotate(-90deg); transform-origin:center;}
@@ -155,7 +158,6 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
 .card-abil-no{font-family:'Pretendard',sans-serif;font-size:10px;font-weight:600;color:var(--acc);opacity:0.8;letter-spacing:0;}
 .card-abil-name{font-family:'Pretendard',sans-serif;font-size:12px;color:var(--acc-tx);font-weight:400;letter-spacing:-0.02em;opacity:0.8;}
 
-/* Subtitle 폰트 튜닝: 영문은 Playfair 이탤릭, 한글은 Noto Serif KR 자연스럽게 혼용 */
 .card-modifier2{font-family:'Playfair Display','Noto Serif KR',serif;font-style:italic;font-size:11px;font-weight:400;color:var(--acc-tx);opacity:0.4;margin-top:16px;text-transform:uppercase;white-space:pre-line;letter-spacing:1.5px;}
 
 @media(max-width:900px){.app{flex-direction:column;}.editor{width:100%;min-width:auto;max-height:none;}}
@@ -295,7 +297,7 @@ function loadData() {
         if(!raw) return false;
         const data = JSON.parse(raw);
         if(data.mode) { mode = data.mode; document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode)); document.getElementById('card').className=mode==='h'?'card-h':'card-v'; }
-        if(data.currentType) { currentType = data.currentType; document.querySelectorAll('#typeToggle .ed-tog-btn').forEach(b=>b.classList.toggle('active', b.dataset.val===currentType)); }
+        if(data.currentType !== undefined) { currentType = data.currentType; document.querySelectorAll('#typeToggle .ed-tog-btn').forEach(b=>b.classList.toggle('active', b.dataset.val===currentType)); }
         if(data.abilities) abilities = data.abilities;
         if(data.imgState) { imgState.x=data.imgState.x; imgState.y=data.imgState.y; imgState.scale=data.imgState.scale; imgState.rot=data.imgState.rot; }
         if(data.inputs) { Object.keys(data.inputs).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=data.inputs[id]; }); }
@@ -415,7 +417,7 @@ wrap.addEventListener('touchstart',e=>{if(e.touches.length===1){drag=true;sx=e.t
 wrap.addEventListener('touchmove',e=>{if(e.touches.length===1&&drag){imgState.x+=e.touches[0].clientX-sx;imgState.y+=e.touches[0].clientY-sy;sx=e.touches[0].clientX;sy=e.touches[0].clientY;applyImg();}if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);imgState.scale*=d/lastTD;imgState.scale=Math.max(0.3,Math.min(5,imgState.scale));lastTD=d;applyImg();}e.preventDefault();},{passive:false});
 wrap.addEventListener('touchend',()=>{if(drag){drag=false;saveData();}});
 
-// 수출 시 실금(Hairline) 완벽 차단 로직
+// 수출 시 실금 완벽 차단 로직 적용
 async function exportCard(){
     await document.fonts.ready;
     await new Promise(r=>setTimeout(r,500));
@@ -427,17 +429,17 @@ async function exportCard(){
         scale:3, 
         useCORS:true,
         allowTaint:true,
-        x: 0, // 강제 원점 캡처
+        x: 0,
         y: 0,
-        scrollX: -window.scrollX, // 브라우저 스크롤 오차 보정
+        scrollX: -window.scrollX, 
         scrollY: -window.scrollY,
-        width: Math.floor(card.getBoundingClientRect().width), // 소수점 픽셀 버림 (실금 원인 1)
-        height: Math.floor(card.getBoundingClientRect().height), // 소수점 픽셀 버림
+        width: Math.floor(card.getBoundingClientRect().width), 
+        height: Math.floor(card.getBoundingClientRect().height), 
         logging:false,
         onclone:function(doc){
             const clonedCard = doc.getElementById('card');
-            clonedCard.style.boxShadow = 'none'; // 그림자 때문에 생기는 유령선 차단
-            clonedCard.style.transform = 'none'; // 임의 스케일 차단
+            clonedCard.style.boxShadow = 'none'; 
+            clonedCard.style.transform = 'none'; 
             clonedCard.style.borderRadius = '0';
             const diag = clonedCard.querySelector('.card-diag');
             if(diag) diag.style.display='none';
