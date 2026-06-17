@@ -100,70 +100,75 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
 .preview{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;background:#030303;position:relative;}
 .preview::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at center, rgba(255,255,255,0.05) 1px, transparent 1px);background-size:24px 24px;pointer-events:none;}
 
-/* ═══ CARD ═══ */
+/* ═══ CARD BASE ═══ */
 .card-h{width:960px;height:540px;position:relative;overflow:hidden;background:var(--acc-bg);box-shadow:0 20px 50px rgba(0,0,0,0.8);}
 .card-v{width:405px;height:720px;position:relative;overflow:hidden;background:var(--acc-bg);box-shadow:0 20px 50px rgba(0,0,0,0.8);}
 .card-img-wrap{position:absolute;top:0;left:0;overflow:hidden;cursor:grab;z-index:1;}
 .card-img-wrap:active{cursor:grabbing;}
-.card-h .card-img-wrap{width:60%;height:100%;}
-.card-v .card-img-wrap{width:100%;height:55%;}
 .card-img{position:absolute;width:200%;height:200%;top:-50%;left:-50%;background-size:contain;background-position:center;background-repeat:no-repeat;transform-origin:center;}
-.card-h .card-img-wrap::after{content:'';position:absolute;top:0;right:0;width:50%;height:100%;background:linear-gradient(to right,transparent,var(--acc-bg));z-index:2;pointer-events:none;}
-.card-v .card-img-wrap::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:50%;background:linear-gradient(to bottom,transparent,var(--acc-bg));z-index:2;pointer-events:none;}
 .card-diag{position:absolute;z-index:3;pointer-events:none;overflow:hidden;}
+.card-topbar{position:absolute;top:0;left:0;right:0;height:2px;z-index:6;background:linear-gradient(to right,var(--acc),transparent 60%);opacity:0.3;}
+
+/* ═══ HORIZONTAL LAYOUT (.card-h) ═══ */
+.card-h .card-img-wrap{width:60%;height:100%;}
+.card-h .card-img-wrap::after{content:'';position:absolute;top:0;right:0;width:50%;height:100%;background:linear-gradient(to right,transparent,var(--acc-bg));z-index:2;pointer-events:none;}
 .card-h .card-diag{top:0;left:0;width:100%;height:100%;}
 .card-h .card-diag::before{content:'';position:absolute;top:-20%;right:30%;width:1px;height:140%;background:linear-gradient(to bottom,var(--acc),transparent 40%,transparent 60%,var(--acc));opacity:0.12;transform:rotate(25deg);}
-.card-sys{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:6px;color:var(--acc-tx);opacity:0.12;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
-.card-h .card-sys{top:14px;right:14px;}
-.card-v .card-sys{top:50%;left:14px;font-size:5px;transform:translateY(-50%) rotate(90deg);transform-origin:center;}
-.card-arch{position:absolute;z-index:2;pointer-events:none;font-family:'Bebas Neue',sans-serif;color:var(--acc-tx);opacity:0.025;line-height:0.85;white-space:nowrap;}
-.card-h .card-arch{top:50%;right:-70px;font-size:160px;transform:translateY(-50%) rotate(90deg);transform-origin:center;}
-.card-v .card-arch{bottom:8px;left:12px;font-size:90px;}
-.card-topbar{position:absolute;top:0;left:0;right:0;height:2px;z-index:6;background:linear-gradient(to right,var(--acc),transparent 60%);opacity:0.3;}
-.card-cn-bg{position:absolute;z-index:3;pointer-events:none;font-family:'Bebas Neue',sans-serif;text-transform:uppercase;line-height:0.85;color:var(--acc-tx);opacity:0.03;white-space:nowrap;}
-.card-h .card-cn-bg{bottom:12px;left:14px;font-size:100px;}
-.card-v .card-cn-bg{top:50%;right:-20px;font-size:70px;transform:translateY(-50%) rotate(90deg);transform-origin:center;}
+.card-h .card-sys{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:6px;color:var(--acc-tx);opacity:0.12;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;top:14px;right:14px;}
+.card-h .card-arch{position:absolute;z-index:2;pointer-events:none;font-family:'Bebas Neue',sans-serif;color:var(--acc-tx);opacity:0.025;line-height:0.85;white-space:nowrap;top:50%;left:890px;font-size:160px;transform:translate(-50%, -50%) rotate(90deg);transform-origin:center;}
+.card-h .card-cn-bg{position:absolute;z-index:3;pointer-events:none;font-family:'Bebas Neue',sans-serif;text-transform:uppercase;line-height:0.85;color:var(--acc-tx);opacity:0.03;white-space:nowrap;bottom:12px;left:14px;font-size:100px;}
+.card-h .card-elem{position:absolute;z-index:4;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:36px;overflow:visible!important;top:50%;right:24px;transform:translateY(-50%);}
+.card-h .card-danger{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--acc);padding:4px 12px;opacity:0.8;border:0.5px solid var(--acc);border-left:3px solid var(--acc);top:48px;right:32px;}
+.card-h .card-info{position:absolute;z-index:5;display:flex;flex-direction:column;top:0;right:0;width:48%;height:100%;padding:64px 32px 32px 16px;justify-content:center;}
+.card-h .card-cn-en{font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:0.88;letter-spacing:4px;color:var(--acc-tx);text-transform:uppercase;margin-bottom:4px;}
+.card-h .card-cn-kr{font-family:'Pretendard',sans-serif;font-size:16px;font-weight:600;color:var(--acc-tx);opacity:0.6;letter-spacing:-0.04em;transform:scaleX(0.97);transform-origin:left;margin-bottom:16px;}
+.card-h .card-stats{display:grid;gap:6px 0;grid-template-columns:85px 1fr;align-items:baseline;}
 
-/* Element icon (크기 1.2배 상향) */
-.card-elem{position:absolute;z-index:4;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:36px;overflow:visible!important;}
-.card-h .card-elem{top:50%;right:24px;transform:translateY(-50%);}
-.card-v .card-elem{right:20px;bottom:28%;}
+/* ═══ VERTICAL LAYOUT (.card-v) 완벽 수정판 ═══ */
+.card-v .card-img-wrap{width:100%;height:60%;}
+.card-v .card-img-wrap::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:50%;background:linear-gradient(to bottom,transparent,var(--acc-bg) 90%);z-index:2;pointer-events:none;}
+.card-v .card-diag{display:none;} /* 세로모드에선 대각선 생략 (가독성 확보) */
+
+/* 텍스트 로테이션 및 중심축 완벽 고정 */
+.card-v .card-sys{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:5px;color:var(--acc-tx);opacity:0.15;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;
+    top:50%; left:12px; transform:translate(-50%, -50%) rotate(-90deg); transform-origin:center;}
+.card-v .card-arch{position:absolute;z-index:2;pointer-events:none;font-family:'Bebas Neue',sans-serif;color:var(--acc-tx);opacity:0.025;line-height:0.85;white-space:nowrap;
+    top:30%; left:28px; font-size:100px; transform:translate(-50%, -50%) rotate(-90deg); transform-origin:center;}
+.card-v .card-cn-bg{position:absolute;z-index:3;pointer-events:none;font-family:'Bebas Neue',sans-serif;text-transform:uppercase;line-height:0.85;color:var(--acc-tx);opacity:0.03;white-space:nowrap;
+    top:40%; left:375px; font-size:80px; transform:translate(-50%, -50%) rotate(90deg); transform-origin:center;}
+
+/* 겹침 방지를 위해 엘리먼트 위치를 텍스트 패널(info) 위쪽으로 분리 */
+.card-v .card-elem{position:absolute;z-index:4;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:18px;overflow:visible!important;
+    top:auto; bottom:45%; right:28px; transform:translateY(50%);}
+.card-v .card-danger{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--acc);padding:4px 12px;opacity:0.8;border:0.5px solid var(--acc);border-left:3px solid var(--acc);
+    top:24px; left:32px; right:auto; z-index:8;}
+
+/* 정보창 여유롭게 하단 고정 */
+.card-v .card-info{position:absolute;z-index:5;display:flex;flex-direction:column;
+    bottom:0; left:0; width:100%; height:48%; padding:0 32px 32px 32px; justify-content:flex-end;}
+.card-v .card-cn-en{font-family:'Bebas Neue',sans-serif;font-size:46px;line-height:0.88;letter-spacing:4px;color:var(--acc-tx);text-transform:uppercase;margin-bottom:2px;}
+.card-v .card-cn-kr{font-family:'Pretendard',sans-serif;font-size:14px;font-weight:600;color:var(--acc-tx);opacity:0.6;letter-spacing:-0.04em;transform:scaleX(0.97);transform-origin:left;margin-bottom:12px;}
+.card-v .card-stats{display:grid;gap:5px 0;grid-template-columns:75px 1fr;align-items:baseline;}
+
+/* ═══ 공통 요소 (아이콘/스탯/어빌리티) ═══ */
 .card-elem-row{display:flex;align-items:center;gap:12px;overflow:visible!important;}
 .card-elem-row::after{content:'';width:28px;height:0.5px;background:var(--acc);opacity:0.3;flex-shrink:0;}
-/* 로고 80px -> 96px (1.2배 확대) */
+.card-v .card-elem-row::after{display:none;} /* 세로모드는 심플하게 라인 제거 */
 .card-elem-icon{width:96px;height:96px;flex-shrink:0;overflow:visible!important;}
 .card-elem-icon svg{width:100%;height:100%;display:block;overflow:visible!important;}
 .card-elem-kw{display:flex;align-items:center;gap:8px;}
 .card-elem-kw::after{content:'';width:24px;height:0.5px;background:var(--acc);opacity:0.3;flex-shrink:0;}
+.card-v .card-elem-kw::after{display:none;}
 .card-elem-text{font-family:'Pretendard',sans-serif;font-size:10px;font-weight:600;color:var(--acc);opacity:0.7;letter-spacing:1.5px;white-space:nowrap;}
 
-/* Danger badge */
-.card-danger{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--acc);padding:4px 12px;opacity:0.8;border:0.5px solid var(--acc);border-left:3px solid var(--acc);}
-.card-h .card-danger{top:48px;right:32px;}
-.card-v .card-danger{top:20px;right:32px;z-index:8;}
-
-/* Info Panel (여백 확장) */
-.card-info{position:absolute;z-index:5;display:flex;flex-direction:column;}
-.card-h .card-info{top:0;right:0;width:48%;height:100%;padding:64px 32px 32px 16px;justify-content:center;}
-.card-v .card-info{bottom:0;left:0;width:100%;height:48%;padding:20px 36px 28px 32px;}
 .card-modifier{font-family:'Playfair Display',serif;font-size:12px;font-style:italic;letter-spacing:2.5px;color:var(--acc);opacity:0.8;text-transform:uppercase;margin-bottom:6px;}
 .card-type{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--acc);opacity:0.6;margin-bottom:10px;}
-.card-cn-en{font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:0.88;letter-spacing:4px;color:var(--acc-tx);text-transform:uppercase;margin-bottom:4px;}
-.card-v .card-cn-en{font-size:46px;}
-.card-cn-kr{font-family:'Pretendard',sans-serif;font-size:16px;font-weight:600;color:var(--acc-tx);opacity:0.6;letter-spacing:-0.04em;transform:scaleX(0.97);transform-origin:left;margin-bottom:16px;}
-.card-v .card-cn-kr{font-size:14px;margin-bottom:14px;}
-
-/* Stats (자간/행간 넉넉하게 튜닝) */
-.card-stats{display:grid;gap:6px 0;}
-.card-h .card-stats{grid-template-columns:85px 1fr;align-items:baseline;}
-.card-v .card-stats{grid-template-columns:75px 1fr;align-items:baseline;}
 .card-stat-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2.5px;color:var(--acc);text-transform:uppercase;font-weight:600;opacity:0.6;display:flex;align-items:center;gap:6px;}
 .card-stat-label::before{content:'';width:4px;height:4px;background:var(--acc);opacity:0.5;transform:rotate(45deg);flex-shrink:0;}
 .card-stat-value{font-family:'Pretendard',sans-serif;font-size:12px;color:var(--acc-tx);opacity:0.8;font-weight:400;letter-spacing:-0.02em;}
 
-/* ═══ ABILITY SECTION (카드 렌더링 측 감각적 디자인) ═══ */
-.card-abilities{margin-top:20px;display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(255,255,255,0.1);padding-top:14px;}
-.card-ability-title{font-family:'IBM Plex Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--acc);opacity:0.5;margin-bottom:4px;text-transform:uppercase;}
+.card-abilities{margin-top:16px;display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(255,255,255,0.1);padding-top:12px;}
+.card-ability-title{font-family:'IBM Plex Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--acc);opacity:0.5;margin-bottom:2px;text-transform:uppercase;}
 .card-abil-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);padding:6px 10px;border-left:2px solid var(--acc);}
 .card-abil-no{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--acc);opacity:0.8;letter-spacing:1px;}
 .card-abil-name{font-family:'Pretendard',sans-serif;font-size:12px;color:var(--acc-tx);font-weight:500;letter-spacing:-0.02em;}
@@ -312,7 +317,7 @@ function applyColors(){
     if(eData) renderElemIcon(eData.b64, a);
 }
 
-// Abilities (에디터 로직)
+// Abilities
 function addAbility(){abilities.push('');renderAbilities();updateCard();}
 function removeAbility(i){abilities.splice(i,1);renderAbilities();updateCard();}
 function renderAbilities(){
@@ -345,7 +350,6 @@ function updateCard(){
     const elem=v('f_elem')||'무속성';
     const eData=ELEMENTS[elem];
     
-    // 기본 스테이터스 렌더링 (어빌리티 제외)
     let statsHtml='';
     const fields=[['NAME',v('f_name')],['AGE',v('f_age')],['NATION',v('f_nation')],['RANK',v('f_rank')],['ELEMENT',eData?eData.en:'—'],['TEAM',team]];
     fields.forEach(([l,val])=>{
@@ -353,7 +357,6 @@ function updateCard(){
     });
     document.getElementById('cStats').innerHTML=statsHtml;
 
-    // 카드용 어빌리티 모듈 별도 렌더링
     let abilHtml='';
     const validAbilities = abilities.filter(a => a.trim() !== '');
     if(validAbilities.length > 0) {
@@ -378,7 +381,6 @@ function renderElemIcon(b64, color){
     let svgStr=atob(b64).replace(/<path/g,'<path fill="'+color+'"');
     const tmp=new Image();
     tmp.onload=()=>{
-        // 아이콘 선명도를 위해 내부 캔버스 해상도 상향 (240x240)
         const cv=document.createElement('canvas');cv.width=240;cv.height=240;
         cv.getContext('2d').drawImage(tmp,0,0,240,240);
         document.getElementById('cElemIcon').innerHTML='<img src="'+cv.toDataURL('image/png')+'" style="width:100%;height:100%;display:block;" alt="">';
