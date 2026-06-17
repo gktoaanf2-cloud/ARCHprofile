@@ -124,42 +124,43 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
 .card-h .card-cn-kr{font-family:'Pretendard',sans-serif;font-size:16px;font-weight:600;color:var(--acc-tx);opacity:0.6;letter-spacing:-0.04em;transform:scaleX(0.97);transform-origin:left;margin-bottom:16px;}
 .card-h .card-stats{display:grid;gap:6px 0;grid-template-columns:85px 1fr;align-items:baseline;}
 
-/* ═══ VERTICAL LAYOUT (.card-v) 완벽 수정판 ═══ */
+/* ═══ VERTICAL LAYOUT (.card-v) ═══ */
 .card-v .card-img-wrap{width:100%;height:60%;}
 .card-v .card-img-wrap::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:50%;background:linear-gradient(to bottom,transparent,var(--acc-bg) 90%);z-index:2;pointer-events:none;}
-.card-v .card-diag{display:none;} /* 세로모드에선 대각선 생략 (가독성 확보) */
-
-/* 텍스트 로테이션 및 중심축 완벽 고정 */
-.card-v .card-sys{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:5px;color:var(--acc-tx);opacity:0.15;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;
-    top:50%; left:12px; transform:translate(-50%, -50%) rotate(-90deg); transform-origin:center;}
-.card-v .card-arch{position:absolute;z-index:2;pointer-events:none;font-family:'Bebas Neue',sans-serif;color:var(--acc-tx);opacity:0.025;line-height:0.85;white-space:nowrap;
-    top:30%; left:28px; font-size:100px; transform:translate(-50%, -50%) rotate(-90deg); transform-origin:center;}
-.card-v .card-cn-bg{position:absolute;z-index:3;pointer-events:none;font-family:'Bebas Neue',sans-serif;text-transform:uppercase;line-height:0.85;color:var(--acc-tx);opacity:0.03;white-space:nowrap;
-    top:40%; left:375px; font-size:80px; transform:translate(-50%, -50%) rotate(90deg); transform-origin:center;}
-
-/* 겹침 방지를 위해 엘리먼트 위치를 텍스트 패널(info) 위쪽으로 분리 */
-.card-v .card-elem{position:absolute;z-index:4;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:18px;overflow:visible!important;
-    top:auto; bottom:45%; right:28px; transform:translateY(50%);}
-.card-v .card-danger{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--acc);padding:4px 12px;opacity:0.8;border:0.5px solid var(--acc);border-left:3px solid var(--acc);
-    top:24px; left:32px; right:auto; z-index:8;}
-
-/* 정보창 여유롭게 하단 고정 */
-.card-v .card-info{position:absolute;z-index:5;display:flex;flex-direction:column;
-    bottom:0; left:0; width:100%; height:48%; padding:0 32px 32px 32px; justify-content:flex-end;}
+.card-v .card-diag{display:none;}
+.card-v .card-sys{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:5px;color:var(--acc-tx);opacity:0.15;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;top:50%; left:12px; transform:translate(-50%, -50%) rotate(-90deg); transform-origin:center;}
+.card-v .card-arch{position:absolute;z-index:2;pointer-events:none;font-family:'Bebas Neue',sans-serif;color:var(--acc-tx);opacity:0.025;line-height:0.85;white-space:nowrap;top:30%; left:28px; font-size:100px; transform:translate(-50%, -50%) rotate(-90deg); transform-origin:center;}
+.card-v .card-cn-bg{position:absolute;z-index:3;pointer-events:none;font-family:'Bebas Neue',sans-serif;text-transform:uppercase;line-height:0.85;color:var(--acc-tx);opacity:0.03;white-space:nowrap;top:40%; left:375px; font-size:80px; transform:translate(-50%, -50%) rotate(90deg); transform-origin:center;}
+.card-v .card-elem{position:absolute;z-index:4;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:18px;overflow:visible!important;top:auto; bottom:45%; right:28px; transform:translateY(50%);}
+.card-v .card-danger{position:absolute;z-index:5;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--acc);padding:4px 12px;opacity:0.8;border:0.5px solid var(--acc);border-left:3px solid var(--acc);top:24px; left:32px; right:auto; z-index:8;}
+.card-v .card-info{position:absolute;z-index:5;display:flex;flex-direction:column;bottom:0; left:0; width:100%; height:48%; padding:0 32px 32px 32px; justify-content:flex-end;}
 .card-v .card-cn-en{font-family:'Bebas Neue',sans-serif;font-size:46px;line-height:0.88;letter-spacing:4px;color:var(--acc-tx);text-transform:uppercase;margin-bottom:2px;}
 .card-v .card-cn-kr{font-family:'Pretendard',sans-serif;font-size:14px;font-weight:600;color:var(--acc-tx);opacity:0.6;letter-spacing:-0.04em;transform:scaleX(0.97);transform-origin:left;margin-bottom:12px;}
 .card-v .card-stats{display:grid;gap:5px 0;grid-template-columns:75px 1fr;align-items:baseline;}
 
-/* ═══ 공통 요소 (아이콘/스탯/어빌리티) ═══ */
-.card-elem-row{display:flex;align-items:center;gap:12px;overflow:visible!important;}
-.card-elem-row::after{content:'';width:28px;height:0.5px;background:var(--acc);opacity:0.3;flex-shrink:0;}
-.card-v .card-elem-row::after{display:none;} /* 세로모드는 심플하게 라인 제거 */
-.card-elem-icon{width:96px;height:96px;flex-shrink:0;overflow:visible!important;}
+/* ═══ 공통 요소 (아이콘/스탯/어빌리티 텍티컬 라인) ═══ */
+.card-elem-row{position:relative;display:flex;align-items:center;gap:12px;overflow:visible!important;}
+.card-elem-icon{width:96px;height:96px;flex-shrink:0;overflow:visible!important;position:relative;z-index:2;}
 .card-elem-icon svg{width:100%;height:100%;display:block;overflow:visible!important;}
-.card-elem-kw{display:flex;align-items:center;gap:8px;}
-.card-elem-kw::after{content:'';width:24px;height:0.5px;background:var(--acc);opacity:0.3;flex-shrink:0;}
-.card-v .card-elem-kw::after{display:none;}
+
+.card-elem-kw{position:relative;display:flex;align-items:center;gap:10px;}
 .card-elem-text{font-family:'Pretendard',sans-serif;font-size:10px;font-weight:600;color:var(--acc);opacity:0.7;letter-spacing:1.5px;white-space:nowrap;}
+
+/* 가로 모드 (Horizontal) 디테일 라인 */
+.card-h .card-elem-row::after{content:'';width:45px;height:1px;background:linear-gradient(to right,var(--acc) 0%,var(--acc) 25px,transparent 25px,transparent 30px,var(--acc) 30px,var(--acc) 33px,transparent 33px,transparent 37px,var(--acc) 37px,var(--acc) 45px);opacity:0.5;flex-shrink:0;}
+.card-h .card-elem-row::before{content:'';position:absolute;right:-2px;top:50%;transform:translateY(-50%) rotate(45deg);width:4px;height:4px;background:var(--acc);opacity:0.8;}
+
+.card-h .card-elem-kw::after{content:'';width:25px;height:1px;background:linear-gradient(to right,var(--acc) 0%,var(--acc) 12px,transparent 12px,transparent 16px,var(--acc) 16px,var(--acc) 25px);opacity:0.4;flex-shrink:0;}
+.card-h .card-elem-kw::before{content:'';width:2px;height:10px;background:var(--acc);opacity:0.5;}
+
+/* 세로 모드 (Vertical) 디테일 라인 */
+.card-v .card-elem-row{flex-direction:column;gap:16px;}
+.card-v .card-elem-row::after{content:'';width:1px;height:35px;background:linear-gradient(to bottom,var(--acc) 0%,var(--acc) 15px,transparent 15px,transparent 20px,var(--acc) 20px,var(--acc) 23px,transparent 23px,transparent 27px,var(--acc) 27px,var(--acc) 35px);opacity:0.5;flex-shrink:0;}
+.card-v .card-elem-row::before{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%) rotate(45deg);width:4px;height:4px;background:var(--acc);opacity:0.8;}
+
+.card-v .card-elem-kw{flex-direction:column;gap:12px;}
+.card-v .card-elem-kw::after{content:'';width:1px;height:20px;background:linear-gradient(to bottom,var(--acc) 0%,var(--acc) 8px,transparent 8px,transparent 12px,var(--acc) 12px,var(--acc) 20px);opacity:0.4;flex-shrink:0;}
+.card-v .card-elem-kw::before{content:'';width:10px;height:2px;background:var(--acc);opacity:0.5;}
 
 .card-modifier{font-family:'Playfair Display',serif;font-size:12px;font-style:italic;letter-spacing:2.5px;color:var(--acc);opacity:0.8;text-transform:uppercase;margin-bottom:6px;}
 .card-type{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--acc);opacity:0.6;margin-bottom:10px;}
@@ -178,7 +179,6 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
 @media(max-width:900px){.app{flex-direction:column;}.editor{width:100%;min-width:auto;max-height:none;}}
 </style></head><body>
 
-<!-- LOADING -->
 <div class="loading-screen" id="loadScreen">
     <div class="ld-logo">ARCH</div>
     <div class="ld-text" id="ldText">AEGIS SYSTEM INITIALIZING...</div>
@@ -193,7 +193,6 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
         <button class="mode-btn" data-mode="v" onclick="setMode('v')">VERTICAL</button>
     </div>
 
-    <!-- 기본 색상을 흑백 기반으로 세팅 -->
     <div class="ed-sec">THEME CONFIG</div>
     <div class="ed-colors">
         <div class="ed-color-item"><span>ACCENT</span><input type="color" id="c_acc" value="#ffffff"></div>
@@ -267,7 +266,6 @@ body{background:#000;color:#fff;font-family:'Pretendard',sans-serif;min-height:1
             <div class="card-cn-kr" id="cCnKr">코드네임</div>
             
             <div class="card-stats" id="cStats"></div>
-            <!-- 카드 렌더링에 별도로 추가되는 어빌리티 모듈 칸 -->
             <div id="cAbilities"></div>
             
             <div class="card-modifier2" id="cSub">SUBTITLE</div>
@@ -281,7 +279,7 @@ const ELEMENTS={
 "불":{en:"Pyre",color:"#FF4444",b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii00NCAtNSA0NTQgNDU0IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0Ij48cGF0aCBkPSJNMTgzLDMyMmwyLDIsMyw1LDQsMywxLDItNiw2LTEsMy0zLDMtMi0yLTItNC01LTQtMS0yLDYtNiw0LTZaIi8+PHBhdGggZD0iTTE4MywzMTB2M2wtMSwzLTIsNC0yLDMtOSw5LTQsMiw0LDIsOCw4LDIsMywzLDYsMSwzdjNsMi03LDMtNiwzLTQsNS01LDYtMy01LTItNy03LTQtNi0xLTItMi03WiIvPjxwYXRoIGQ9Ik0yODIsMjk2bDIsN3YyMGwtNCwxNS02LDEyLTcsMTAtMTksMTktMTIsOS0xMywxMy03LDEwLTUsMTAtMiw5LTIsNHYzbDEtNSwzLTYsNy0xMCwxNC0xMywyOC0xOSwxMy0xMyw3LTEwLDYtMTMsMy0xMnYtMThsLTMtMTMtNC05WiIvPjxwYXRoIGQ9Ik04NiwyOTZsLTUsMTMtMiw5djE4bDUsMTcsMyw2LDEwLDE0LDgsOCwxNCwxMSwxNiwxMCwxNywxNiw0LDYsNSwxMHYyLTJsLTItNHYtM2wtMi02LTUtMTAtNy0xMC0xMy0xMy0xMS04LTgtNy0xMy0xNC02LTktNy0xNS0zLTEzdi0xOWwxLTQsMS0xdi0yWiIvPjxwYXRoIGQ9Ik0xNDMsMjE0bC0yLDE0LTUsMTItOCwxMi0xNiwxOS04LDE1LTQsMTQtMSw5LDEsMTMsNCwxMyw4LDE0LDgsOSwxNSwxMiwxNiwxNiw5LDEzLDYsMTIsNiwyMCwyLDEzLDEsMjQsMi0yNi0xLTIxLTMtMTUtNS0xNC0xMC0xNi0zMy0zMS04LTEzLTQtMTN2LTIybDItOCw3LTE2LDE3LTI3LDQtMTN2LTE5WiIvPjxwYXRoIGQ9Ik0yMjYsMjEybC0xLDIsMSwyMyw0LDExLDEzLDIwLDgsMTYsNCwxNHYyMWwtNCwxMy02LDEwLTEyLDEzLTEzLDEwLTExLDExLTExLDE5LTQsMTItMywxOXYyNmwyLDEwdjhsMS0zMCwzLTE1LDEwLTI1LDE1LTIwLDE5LTE2LDE1LTE1LDktMTYsMy0xMSwxLTE0LTQtMjAtMTEtMjAtMTMtMTUtMTAtMTUtNS0xNS0xLTYsMS01WiIvPjxwYXRoIGQ9Ik0xODEsOThsNCwxNi0xLDIzLTQsMTQtMTUsMjktMywxNHYxM2w0LDE3djE4bC05LDIxLTE5LDIxLTEwLDE3LTMsMTB2MTZsMywxMC0xLTE1LDQtMTMsNy0xMCwxMC05LDEsMi02LDExLDgtMTIsMjEtMjMsNy0xNSw0LTI0LDgsMzEsMjIsMzcsNSwxMi05LTMzLDI2LDI5LDYsMTYtMSwxNyw0LTE4LTQtMjAtOC0xNC0yMi0yNi05LTIzLTEtMjEsNi0zMC02LDEzLTcsNi03LTItNC03di0xNGwxMS0yOCwyLTE5LTQtMTgtMTAtMTlaIi8+PC9zdmc+",st:"파괴 · 열기 · 폭발",gd:"화상 · 증폭"},
 "물":{en:"Aqua",color:"#4488FF",b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjI2MCAtMSA0NTQgNDU0IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0Ij48cGF0aCBkPSJNNDk0LDMyMmwyLDIsMiw0LDUsNHYzbC01LDQtMiw0LTQsMS0xLTMtNy02di0zbDctNiwxLTMsMi0xWiIvPjxwYXRoIGQ9Ik00OTQsMzExdjJsLTEsMXYybC0xLDItNCw2LTcsNy00LDMsNCwyLDYsNiw0LDYsMiw0djJsMSwxdjItM2wxLTMsMi00LDQtNiw1LTUsMy0yaDJsLTUtMy02LTYtMi0zLTMtNnYtMmwtMS0xdi0yWiIvPjxwYXRoIGQ9Ik00ODIsMjUzbC0xMywyNS0yNiwzNS03LDE2LTEsNXYxM2wzLDEwLDcsMTEsOCw4LDgsNiwxMSwxMSw1LDcsNywxNCw0LDEzLDQsMjIsMSwxNHYtNGwtMS0xdi0yNmwtNC0yNi01LTE1LTktMTUtMTEtMTEtNi00LTExLTEyLTQtMTB2LTExbDQtMTMsMjYtMzksMTAtMjNaIi8+PHBhdGggZD0iTTUwMywyNDZsMywxMCwxMiwyNSwyMCwyOCw1LDEwLDIsN3YxNGwtNCw5LTMsNC0yNCwyMi05LDE1LTQsMTEtNCwyMS0yLDQxLDItMjQsNC0xOCw1LTEzLDktMTQsMzItMzIsMy02LDMtMTEtMS0xNS02LTE1LTMwLTQxLTktMTctNC0xMVoiLz48cGF0aCBkPSJNNDk0LDEyMGwtNCw0Ny0xMyw0NS0xOCwzNC00Miw1OC0xMCwyNywxLDIyLDEwLDIxLDEzLDEzLDI2LDE3LDEyLDEyLDQsOS0xMC0yMi0yNS0xNy0xNS0xNi03LTE4di0xN2w4LTIyLDM2LTUxLDE4LTMzLDktMjUsNy0zOSw3LDQwLDEwLDI3LDE2LDI5LDM4LDU0LDcsMTl2MThsLTYsMTYtMTUsMTctMjYsMTctMTAsMjMsMTMtMTksMzAtMjAsMTEtMTEsMTItMjgtMS0yMS04LTE5LTQzLTYxLTIxLTQxLTExLTQ0LTMtNDFaIi8+PC9zdmc+",st:"수압 · 침식 · 해일",gd:"치유 · 정화"},
 "풀":{en:"Verde",color:"#66CC44",b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ijg2IDUzNCA0NTQgNDU0IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0Ij48cGF0aCBkPSJNMjI1LDg2NmgzbDQsMiwxMCwyLDE3LDYsMTMsNyw1LDQsOSw5LDYsNyw3LDEwLDYsMTJ2Mi0zbC0xLTF2LTRsLTQtMTMtMy02LTYtOS00LTUtNy03LTgtNi0xMi02LTctMmgtNmwtMS0xaC01bC0xMiwxLTEsMWgtM1oiLz48cGF0aCBkPSJNNDQ2LDgxMWwtMSwyLTUsNS02LDUtNiw0LTE0LDdoLTVsLTE1LDQtMTAsNS0xNSwxMS01LDUsNy00LDktMywxMC0yaDEybDUtMSw2LTIsOC00LDMtMiwxMi0xMiw2LTksMi00di0ybDItM1oiLz48cGF0aCBkPSJNMTgyLDgxMWwzLDV2MWwzLDYsNiw4LDgsOCw5LDYsNCwyLDExLDMsMTUsMSwxMywzLDMsMSw5LDUtMi0yaC0xbC02LTYtOC02LTYtNC02LTMtMTItNC01LTFoLTdsLTctMy0xMS03LTctNi00LTR2LTFsLTItMloiLz48cGF0aCBkPSJNMzE0LDc5NGwyLDIsNCw2LDMsNS02LDUtMSwzLTIsMi0yLTItMy01LTQtMy0xLTIsNi02LDItM3YtMWwyLTFaIi8+PHBhdGggZD0iTTMxNCw3ODJ2MmwtMSwxdjJsLTMsNi0yLDMtNiw2LTYsMywzLDIsNCwyLDQsNCwzLDQsMyw2djJsMSwxdjItMmwxLTF2LTJsMy02LDMtNCw1LTUsNS0zLTQtMi03LTctNC02LTEtNS0xLTF2LTJaIi8+PHBhdGggZD0iTTQ2MSw3MzhsLTIzLDEyLTE1LDExLTE4LDE5LTE4LDM1LTE2LDE1LTE2LDEwLTEtMiwzLTQtMTUsMTctMTAsMTgtMTAsMjgtNSwyMy0yLDMyLDEtMTIsNC0xNiwzLTUsMSwzLDgtMTUsMTYtMTgsMTEtOCw0NS0xNS0yMi0yLTE3LDQtMjAsMTMtOSwxMC04LDEzLTEtMyw5LTE5LDE4LTI3LDEzLTEzLDE2LTExLDIxLTExLDE5LTE3LDEwLTE0LDE0LTI5LDE0LTIyWiIvPjxwYXRoIGQ9Ik0xNjcsNzM4bDE0LDIyLDE0LDI5LDEzLDE3LDExLDEwLDM4LDIzLDE5LDE4LDYsOCwxMSwxOCw5LDIwLDEwLDM4djktMjFsLTMtMjAtNy0yNi0xNC0yOS0xNy0yMSwxLDctMTctMTEtMTEtMTAtNi04LTYtMTYtOC0xNC0xMS0xMy0yMC0xNi0yNi0xNFoiLz48cGF0aCBkPSJNMzAwLDczNnYybC0xLDF2MmwtMyw2LTQsNi0zLDQtMTcsMTctMyw1djJsLTMsNS0zLDN2MWwtMiwyLDItMiwzLTEsNi00LDktNyw3LTgsNS04LDQtOSwzLTExdi02WiIvPjxwYXRoIGQ9Ik0zMjcsNzMzdjRsMSwxdjVsMiw4LDMsOCw0LDcsNCw2LDEwLDEwLDksNiw1LDIsMiwyLTQtNC0zLTQtMy03LTItMy03LTdoLTFsLTYtNi04LTExLTQtOC0yLTZ2LTNaIi8+PHBhdGggZD0iTTMxNCw2NTF2NmwtMSwxdjdsLTIsMTEtMywxMS0yLDUtMyw1LTksOCw2LDMsNyw3LDQsOCwyLDYsMSw1djUtNmwyLTgsMi01LDMtNSw4LTgsMy0yaDJsLTktOC01LTktMy0xMC0yLTExLTEtOHYtOFoiLz48L3N2Zz4=",st:"성장 · 속박 · 독",gd:"재생 · 속박"},
-"번개":{en:"Fulmen",color:"#FFCC00",b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ijc4MCA1MzEgNDU0IDQ1NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgbWVldCI+PHBhdGggZD0iTTEwNDEsODIxbC02Niw3NSwyMSwxLTE3LDI4LTYsOC0xMiwyMS02LDgsNjItNjYsMTItMTQtMjItMSwzLTQsNC05LDUtNyw0LTksNi05LDQtOSw4LTEzWiIvPjxwYXRoIGQ9Ik0xMDEwLDc4OHYxbDIsMyw3LDctNyw2LTIsNC0yLDItMy01LTctNyw2LTYsMy01aDNaIi8+PHBhdGggZD0iTTEwMDgsNzc3djJsLTQsOC0yLDMtNSw1LTYsNCw0LDIsOSw5LDMsNiwxLDN2MmwyLTYsMy01LDEwLTEwLDMtMS00LTItOC04LTItMy0zLTYtMS0zWiIvPjxwYXRoIGQ9Ik05NzIsNzUwbC0yNiwyNy0zLDItMTksMjAsMywzLDYsNCw1LDUsMjAsMTYsOSw2LDUsNSw5LDdoMWw0LDRoMWwyLDItNS01LTgtMTEtMTQtMTctNi02LTQtNi01LTUtMS0yLDEwLTIwLDktMTUsNy0xNFoiLz48cGF0aCBkPSJNMTAyOCw3NDhsMiwydjFsNSw1LDgsMTB2MWwxMywxNiwxMywxNXYzbC00LDgtOSwxNS03LDE1LTIsMi00LDgsMzYtMzZ2LTFsMTMtMTMtMi0yLTUtMy0yMS0xOC0xOS0xNS0xMy05LTQtNFoiLz48cGF0aCBkPSJNMTA2OCw2MjBsLTQ0LDUxLTMyLDM1LTYsOCwyMiwxLTMwLDU3LTMsNCw2Ni03NS0yMS0yLDQtNSwxMi0yMiwyNS00Miw3LTEwWiIvPjwvc3ZnPg==",st:"속도 · 방전 · 마비",gd:"속증 · 소생"},
+"번개":{en:"Fulmen",color:"#FFCC00",b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ijc4MCA1MzEgNDU0IDQ1NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgbWVldCI+PHBhdGggZD0iTTEwNDEsODIxbC02Niw3NSwyMSwxLTE3LDI4LTYsOC0xMiwyMS02LDgsNjItNjYsMTItMTQtMjItMSwzLTQsNC05LDUtNyw0LTksNi05LDQtOSw4LTEzWiIvPjxwYXRoIGQ9Ik0xMDEwLDc4OHYxbDIsMyw3LDctNyw2LTIsNC0yLDItMy01LTctNyw2LTYsMy01aDNaIi8+PHBhdGggZD0iTTEwMDgsNzc3djJsLTQsOC0yLDMtNSw1LTYsNCw0LDIsOSw5LDMsNiwxLDN2MmwyLTYsMy01LDEwLTEwLDMtMS00LTItOC04LTItMy0zLTYtMS0zWiIvPjxwYXRoIGQ9Ik05NzIsNzUwbC0yNiwyNy0zLDItMTksMjAsMywzLDYsNCw1LDUsMjAsMTYsOSw2LDUsNSw5LDdoMWw0LDRoMWwyLDItNS01LTgtMTEtMTQtMTctNi02LTQtNi01LTUtMS0yLDEwLTIwLDktMTUsNy0xNFoiLz48cGF0aCBkPSJNMTAyOCw3NDhsMiwydjFsNSw1LDgsMTB2MWwxMywxNiwxMywxNXYzbC00LDgtOSwxNS03LDE1LTIsMi00LDgsMzYtMzZ2LTFsMTMtMTMtMi0yLTUtMy0yMS0xOC0xOS0xNS0xMy05LTQtNFoiLz48cGF0aCBkPSJNMTA2OCw6MjBsLTQ0LDUxLTMyLDM1LTYsOCwyMiwxLTMwLDU3LTMsNCw2Ni03NS0yMS0yLDQtNSwxMi0yMiwyNS00Miw3LTEwWiIvPjwvc3ZnPg==",st:"속도 · 방전 · 마비",gd:"속증 · 소생"},
 "바람":{en:"Aero",color:"#44DDAA",b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjU4NCAyMCA0NTQgNDU0IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0Ij48cGF0aCBkPSJNNzM4LDM0OWgybDMsMmgybDEwLDUsMTAsNywxNCwxNCw3LDEwLDIsNS0yLTYtNi0xMi0yLTMtOS05LTYtNC02LTMtNS0yLTExLTMtMS0xaC0yWiIvPjxwYXRoIGQ9Ik04ODcsMzQ4aC0ybC0xLDEtOCwyLTEzLDUtNyw0LTYsNS0yLDItNCw1LTcsMTN2MmwtMiw0LDItNSw3LTEwLDEyLTEyLDUtNCw4LTUsOC00LDUtMmgybDEtMWgyWiIvPjxwYXRoIGQ9Ik05NzMsMzE2bC01My0xLTI5LDMtMjMsNi0xMyw2LTEyLDgtMTAsMTEtNiwxMS04LDI3LTUsMzctMiw0Nyw1LTQ1LDYtMjgsNi0xNyw1LTEwLDEzLTE3LDktOCwxMi04LDI0LTEwLDM4LTgsNDMtNFoiLz48cGF0aCBkPSJNNjQ5LDMxNmwyMSwxLDI1LDMsMjksNiwxOCw2LDE2LDgsMTAsNywxNSwxNSw3LDExLDYsMTQsOCwzMSw2LDQydjEwbC0yLTU0LTUtMzMtMy0xMi04LTE4LTExLTEzLTIwLTEzLTEzLTUtMTYtNC0yOS0zLTU0LDFaIi8+PHBhdGggZD0iTTg0OCwzMTdoM2w0LDIsNC0xLDUtMmg1LTdsLTUtMS0xLTFoLTNsLTIsMS0zLDJaIi8+PHBhdGggZD0iTTc3NSwzMTZsLTUtMy0yLDEtNywyaC03LDRsMSwxaDRsMywyLDMsMSwyLTEsMi0yLDItMVoiLz48cGF0aCBkPSJNODExLDMxMGwzLDMsMSwzLDYsNy0zLDItMyw0LTIsM3YxaC0zdi0xbC02LThoLTFsLTItMiwyLTJoMWwzLTMsMi0zLDItNFoiLz48cGF0aCBkPSJNODEyLDMwMWwtMSwzLTMsNi0zLDQtNSw1LTUsMyw2LDQsMywzLDMsNCw0LDgsMSwzdi0zbDMtNiwyLTMsMTEtMTAtNC0yLTYtNi0zLTQtMS0yLTItNXYtMloiLz48cGF0aCBkPSJNODExLDEzN2wtMiw0Mi01LDQ0LTUsMjQtMTAsMjMtNiw4LTE5LDE3LTIxLDEwLTIzLDUsMjMtMSwyNi01LDE0LTcsOS05LDgtMTUsNS0xOCw2LTUyLDIsNCwxLDIzLDYsMzQsNiwxNiw5LDEzLDEyLDgsMTYsNSw0Miw0LTI1LTUtMTktOS0xMC03LTE4LTIwLTktMjItNS0yMi04LTg4WiIvPjwvc3ZnPg==",st:"비행 · 절단 · 공기 역학",gd:"확산 · 부유"},
 "얼음":{en:"Glacies",color:"#88DDFF",b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjQ0NSA1MzMgNDU0IDQ1NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgbWVldCI+PHBhdGggZD0iTTY3NCw4NDV2NWwtMSwxLTUsMzN2OGwtMiwxMC0yLTN2LTEzbC0yLTE1LTQtMjB2LTZsLTUsMTZ2OGw3LDQwLDIsMjAsMywxOSwxLDF2My02bDQtMTl2LTdsNS0zMSw0LTE5di05bC00LTEzLTEtMXYtMloiLz48cGF0aCBkPSJNNjY2LDgzMWwtMiw0LTIsNnYybDEsMywyLDgsMSwxdjMtNGwxLTQsMy04LTItNi0yLTN2LTJaIi8+PHBhdGggZD0iTTY5OSw4MjZsMSwzLDUsOXYybDIsNCwxLDFoMWwyLDIsNSwzLDgsNCwyLDIsMiwxLTEtMnYtMmwtMy02LTYtMTEtMi0yLTE3LThaIi8+PHBhdGggZD0iTTYzMyw4MjVsLTIsMS0zLDJoLTFsLTgsNS00LDEtNSw5LTcsMTQsMi0xaDFsMi0yLDUtMiw1LTQsMy0xLDItMmgxbDEtMyw0LTcsMi01di0ybDEtMSwxLTJaIi8+PHBhdGggZD0iTTcwMiw3OTZsNCwyLDUsMmgzbDMtMSw4LTMtNC0xLTMtMi00LTFoLTNsLTUsMi00LDJaIi8+PHBhdGggZD0iTTYwNSw3OTZsNSwyLDYsMmgzbDktNC00LTEtMi0yLTMtMWgtNGwtMywxLTMsMi00LDFaIi8+PHBhdGggZD0iTTY2NCw3ODZoM2wzLDUsNCwzLDEsNC02LDUtMyw1LTItMi0yLTQtNS00LTEtMiw3LTcsMS0zWiIvPjxwYXRoIGQ9Ik03MTksNzg4aDNsMSwxLDI2LDVoMTBsNSwyLTIzLDMtMjIsNSwzLDIsNywzLDQzLTgsMjYtNGg3bDEtMWg3LTdsLTI3LTQtNDktOS0xMSw1WiIvPjxwYXRoIGQ9Ik02MTIsODA0bC0yMi01LTI0LTMsNi0yaDlsMjMtNCw1LTJoM2wtOS01LTIxLDMtMzcsNy0yMCwyLTEsMWgtNSw2bDEsMWg3bDIwLDMsNiwyLDQ0LDcsNS0zaDJsMi0yWiIvPjxwYXRoIGQ9Ik02NjYsNzc2bC0xLDMtMyw2LTEwLDEwLTMsMSw0LDIsOCw4LDIsMywxLDIsMiw2di0ybDEtMXYtMmwxLTIsNC02LDUtNSw1LTMtNC0yLTctNy0yLTMtMy02di0yWiIvPjxwYXRoIGQ9Ik02NjYsNzM0djJsLTEsMXYzbC0yLDQtMSw1djJsMSwzLDEsMXYybDIsNCw0LTEyLTItOC0yLTR2LTNaIi8+PHBhdGggZD0iTTczMCw3MzNsLTIsMS0yLDItOCw0LTExLDctMSw0LTIsNS01LDEwLDItMSw2LTQsOC0zLDItMSwxLTEsNS0xMSwyLTIsNS0xMFoiLz48cGF0aCBkPSJNNjAyLDczM2wyLDMsOSwxOSwyLDIsMTUsNywyLDItMS0ydi0ybC0zLTUtMi03LTEtMi0yLTItMTEtNy04LTQtMi0yWiIvPjxwYXRoIGQ9Ik02NjYsNjI5djNsLTEsMS0xLDZ2N2wtNSwzNC02LDM0LTEsMTMsNCwxMHYzbDIsNHYtNmwyLTYsNC0zMXYtMTRsMi0zLDQsMzksMywxNywxLDF2NC0zbDYtMTctMi0xNS02LTMyLTEtMTQtMy0xNHYtN2wtMi03di03WiIvPjwvc3ZnPg==",st:"빙결 · 정지 · 냉기",gd:"수호 · 보호"},
 "무속성":{en:"Non-Attribute",color:"#AAAACC",b64:"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjkxOCAzNSA0NTQgNDU0IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0Ij48cGF0aCBkPSJNMTE0NiwzNThsLTIsNi00LDgtMiwzLTYsNnYzbDQsMTIsNCwyMCw0LDMyLDIsMjV2LTEzbDQtMzgsNC0yMiwyLTgsNC0xMS04LTctMi0zLTQtOXYtNFoiLz48cGF0aCBkPSJNMTIzNSwzMzRsLTksOGgtMWwtOSw5LTMsNy03LDEwLTksOS03LDUtOSw1LTgsOC01LDZ2MWwtMywzaDNsMTItNCw5LTQsMTQtOSwxNC0xNCw1LTcsNi0xMSw1LTE0LDItOFoiLz48cGF0aCBkPSJNMTA1NywzMzNsMSwydjVsNSwxNCw0LDgsOCwxMiwxNCwxNCw3LDUsNSwzLDExLDUsMTEsMywxLDFoMmwtNC02LTEwLTExLTEzLTgtNC0zLTEwLTEwLTUtNy00LTgtMTMtMTRoLTFsLTUtNVoiLz48cGF0aCBkPSJNMTE0NSwzMDVsMiwyLDMsNSwzLDNoMWwyLDItMiwyaC0xbC0zLDMtMyw2aC0zdi0xbC0yLTMtNi01di00bDUtNCw0LTZaIi8+PHBhdGggZD0iTTExODksMzE2aDNsMTAsNCwzLDIsNyw3aDJsMy0xLDEtMSwxMC0zLDIwLTQsMzUtNGgxMS04bC0xLTFoLTlsLTE3LTItMTktMy0xNy00LTYtMi0zLTJoLTJsLTksOS02LDMtNSwxLTEsMWgtMloiLz48cGF0aCBkPSJNMTEwMSwzMTZoLTJsLTEtMWgtM2wtOS01LTUtNS0yLTQtMywyLTUsMi0xMCwzLTksMi0xOSwzLTI2LDNoLTEwLDEybDM4LDUsMTgsNCw3LDIsMywyaDJsMiwxLDctOCw1LTMsNS0yaDNsMi0xWiIvPjxwYXRoIGQ9Ik0xMTQ2LDI5NWwtNCw4LTMsNC03LDctNSwzLDQsMiwzLDNoMWwyLDIsNCw1LDQsOHYybDEtMywzLTYsMi0zLDgtOCw0LTItNC0yLTgtOC0yLTMtMy02di0zWiIvPjxwYXRoIGQ9Ik0xMTI2LDIyOGwtMiwxaC0zbC00LDEtMTQsNi0xNSwxMC0xMiwxMi03LDEwLTQsOC0zLDctMyw5djNsLTEsMXYybDUtMywxMi0xMSwzLTUsMi01LDctMTAsOC04LDYtNCw5LTUsMTEtMTIsNS03WiIvPjxwYXRoIGQ9Ik0xMTY1LDIyN2w2LDd2MWwxMSwxMiw1LDIsOSw2LDExLDExLDUsNyw0LDksMTMsMTMsNSwzLTEtNi01LTE0LTUtMTAtNy0xMC0xNC0xNC02LTQtMTUtOC04LTMtOC0yWiIvPjxwYXRoIGQ9Ik0xMTQ2LDE0NGwtMywzNS01LDQwLTMsMTYtNSwxNyw4LDcsNSw5LDMsOXYtNGw1LTExLDItMyw4LTctNi0yMS00LTI2LTUtNDl2LTEyWiIvPjwvc3ZnPg==",st:"순수 · 변칙",gd:"순수 · 변칙"},
@@ -317,7 +315,7 @@ function applyColors(){
     if(eData) renderElemIcon(eData.b64, a);
 }
 
-// Abilities
+// Abilities (에디터 로직)
 function addAbility(){abilities.push('');renderAbilities();updateCard();}
 function removeAbility(i){abilities.splice(i,1);renderAbilities();updateCard();}
 function renderAbilities(){
@@ -350,6 +348,7 @@ function updateCard(){
     const elem=v('f_elem')||'무속성';
     const eData=ELEMENTS[elem];
     
+    // 기본 스테이터스 렌더링
     let statsHtml='';
     const fields=[['NAME',v('f_name')],['AGE',v('f_age')],['NATION',v('f_nation')],['RANK',v('f_rank')],['ELEMENT',eData?eData.en:'—'],['TEAM',team]];
     fields.forEach(([l,val])=>{
@@ -357,6 +356,7 @@ function updateCard(){
     });
     document.getElementById('cStats').innerHTML=statsHtml;
 
+    // 카드용 어빌리티 모듈 별도 렌더링
     let abilHtml='';
     const validAbilities = abilities.filter(a => a.trim() !== '');
     if(validAbilities.length > 0) {
@@ -381,6 +381,7 @@ function renderElemIcon(b64, color){
     let svgStr=atob(b64).replace(/<path/g,'<path fill="'+color+'"');
     const tmp=new Image();
     tmp.onload=()=>{
+        // 캔버스 해상도
         const cv=document.createElement('canvas');cv.width=240;cv.height=240;
         cv.getContext('2d').drawImage(tmp,0,0,240,240);
         document.getElementById('cElemIcon').innerHTML='<img src="'+cv.toDataURL('image/png')+'" style="width:100%;height:100%;display:block;" alt="">';
